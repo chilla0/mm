@@ -4,7 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
 <meta name="description" content="誰のスマホだろう？">
-<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
+<meta name="theme-color" content="#000000">
+<style>body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}@media (min-width:501px){:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}}</style>
 <title>九条 真尋</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap">
@@ -355,6 +356,16 @@ button:focus-visible{outline:2px solid var(--tint);outline-offset:2px;border-rad
 .mail .from{display:flex;gap:12px;align-items:center;padding-bottom:12px;border-bottom:.5px solid var(--sep)}
 .mail h2{font-size:21px;margin:14px 0}
 .mail pre{font:inherit;font-size:16px;line-height:1.65;white-space:pre-wrap;margin:0}
+
+/* 폰에서 볼 때: 프레임 없이 화면 꽉 채움 */
+@media (max-width:500px){
+  html,body{height:100%}
+  body{padding:0;gap:0;display:block}
+  .phone{width:100%;height:100%;height:100dvh;min-height:0;border-radius:0;box-shadow:none}
+  .island,.foot{display:none}
+  .status{height:calc(48px + env(safe-area-inset-top,0px));padding-top:env(safe-area-inset-top,0px)}
+  .homebar{bottom:calc(8px + env(safe-area-inset-bottom,0px))}
+}
 @media (prefers-reduced-motion:reduce){.toggle::after,.flash{transition:none}.dots.shake{animation:none}}
 </style>
 
