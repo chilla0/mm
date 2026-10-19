@@ -1,0 +1,1493 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="description" content="誰のスマホだろう？">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>九条 真尋</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap">
+<style>
+/* 단일 다크 룩. 아이폰 다크 모드 문법을 따르되 아이콘과 그래픽은 전부 새로 그림 */
+:root{
+  color-scheme: dark;
+  --stage:#0b0b0c;
+  --bg:#000;
+  --cell:#1c1c1e;
+  --cell2:#2c2c2e;
+  --sep:#38383a;
+  --text:#fff;
+  --sec:#8e8e93;
+  --ter:#636366;
+  --tint:#0a84ff;
+  --green:#30d158;
+  --red:#ff453a;
+  --amber:#fccb4f;
+  --olive:#666638;
+  --font:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP","Noto Sans KR",system-ui,sans-serif;
+  --font-ko:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Noto Sans JP",system-ui,sans-serif;
+}
+html,body{height:100%}
+body{margin:0;background:var(--stage);color:var(--text);font-family:var(--font);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:14px;
+  box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;overflow:hidden;-webkit-font-smoothing:antialiased}
+body.ko{font-family:var(--font-ko)}
+*{box-sizing:border-box}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;text-align:inherit}
+button:focus-visible{outline:2px solid var(--tint);outline-offset:2px;border-radius:8px}
+.foot{font-size:11.5px;color:#5c5c60;text-align:center;flex:none}
+
+.phone{position:relative;width:min(390px,100%);height:min(844px,calc(100% - 26px));min-height:560px;border-radius:48px;background:var(--bg);
+  box-shadow:0 0 0 10px #1b1b1d,0 0 0 11px #3a3a3c,0 30px 80px rgba(0,0,0,.7);overflow:hidden;flex:none;isolation:isolate}
+@media (max-width:440px){.phone{border-radius:34px;box-shadow:0 0 0 5px #1b1b1d,0 0 0 6px #3a3a3c}}
+.island{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:118px;height:34px;border-radius:20px;background:#000;z-index:50;pointer-events:none}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column}
+.screen[hidden]{display:none!important}
+.status{height:54px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:6px 34px 0 40px;font-size:16px;font-weight:600;letter-spacing:-.01em;position:relative;z-index:40;font-variant-numeric:tabular-nums}
+.status .r{display:flex;gap:6px;align-items:center}
+.bat{width:26px;height:12.5px;border:1.2px solid rgba(255,255,255,.45);border-radius:4px;padding:1.5px;position:relative;display:inline-block}
+.bat i{display:block;height:100%;width:23%;background:#fff;border-radius:1.5px}
+.bat::after{content:"";position:absolute;right:-3.5px;top:3.5px;width:2px;height:4px;background:rgba(255,255,255,.45);border-radius:0 1px 1px 0}
+.homebar{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);width:138px;height:5px;border-radius:3px;background:#fff;z-index:45}
+.homebar-hit{position:absolute;left:0;right:0;bottom:0;height:26px;z-index:46}
+
+/* 배경화면 */
+.wall{background:
+  radial-gradient(90% 55% at 85% 12%,rgba(252,203,79,.45),transparent 62%),
+  radial-gradient(80% 50% at 0% 95%,rgba(102,102,56,.55),transparent 65%),
+  radial-gradient(60% 40% at 40% 55%,rgba(120,70,20,.35),transparent 70%),
+  linear-gradient(170deg,#2a2010 0%,#120e08 55%,#07070a 100%)}
+
+/* 잠금 */
+.lock-body{flex:1;display:flex;flex-direction:column;align-items:center;padding:0 14px 54px;width:100%}
+.lock-date{font-size:19px;font-weight:600;color:rgba(255,255,255,.88);margin-top:8px}
+.lock-time{font-size:96px;font-weight:700;line-height:1;letter-spacing:-.02em;color:rgba(255,248,232,.95);margin-top:2px;font-variant-numeric:tabular-nums;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Rounded","Hiragino Sans",system-ui,sans-serif}
+.notif{margin-top:auto;width:100%;background:rgba(48,44,38,.62);backdrop-filter:blur(24px) saturate(1.4);-webkit-backdrop-filter:blur(24px) saturate(1.4);border-radius:22px;padding:12px 14px;display:grid;grid-template-columns:38px 1fr auto;gap:1px 10px;align-items:center;text-align:left}
+.notif .aic{grid-row:span 2;width:38px;height:38px;border-radius:9px;overflow:hidden}
+.notif .aic svg{width:100%;height:100%;display:block}
+.notif b{font-size:15px;font-weight:600}
+.notif small{color:rgba(255,255,255,.55);font-size:13px}
+.notif p{grid-column:2/4;margin:0;font-size:15px;line-height:1.3}
+.lock-row{display:flex;justify-content:space-between;width:100%;padding:18px 34px 0}
+.lock-row span{width:50px;height:50px;border-radius:50%;background:rgba(40,36,30,.55);backdrop-filter:blur(10px);display:grid;place-items:center}
+.lock-hint{font-size:13px;color:rgba(255,255,255,.6);margin-top:14px}
+
+/* 암호 */
+.pin-wrap{flex:1;display:flex;flex-direction:column;align-items:center;padding:30px 20px 50px;background:rgba(0,0,0,.35);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);width:100%}
+.pin-title{font-size:20px;margin-top:22px}
+.dots{display:flex;gap:22px;margin:20px 0 34px}
+.dots i{width:13px;height:13px;border-radius:50%;border:1.4px solid #fff}
+.dots i.on{background:#fff}
+.dots.shake{animation:shake .45s}
+@keyframes shake{15%,55%{transform:translateX(-10px)}35%,75%{transform:translateX(10px)}}
+.keys{display:grid;grid-template-columns:repeat(3,78px);gap:16px 26px}
+.key{width:78px;height:78px;border-radius:50%;background:rgba(255,255,255,.16);display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;text-align:center}
+.key b{font-size:34px;font-weight:400}
+.key small{font-size:10px;letter-spacing:.18em;margin-top:2px;font-weight:600}
+.key:active{background:rgba(255,255,255,.45)}
+.pin-foot{display:flex;justify-content:space-between;width:100%;max-width:290px;margin-top:auto;font-size:16px}
+.pin-hint{min-height:40px;margin-top:16px;font-size:14px;color:rgba(255,255,255,.75);text-align:center}
+
+/* 홈 */
+.home-body{flex:1;display:flex;flex-direction:column;padding:10px 18px 24px;min-height:0}
+.widgets{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.wdg{border-radius:22px;padding:14px 15px;aspect-ratio:1;display:flex;flex-direction:column;justify-content:space-between;text-align:left}
+.wdg.wx{background:linear-gradient(180deg,#2a6fc0,#4d97e0)}
+.wdg.wx .t{font-size:42px;font-weight:300;line-height:1}
+.wdg.wx small{font-size:12px;font-weight:600;display:block}
+.wdg.cal{background:#fff;color:#000}
+.wdg.cal .dw{color:#ff3b30;font-size:12px;font-weight:700;letter-spacing:.02em}
+.wdg.cal .dn{font-size:40px;font-weight:300;line-height:1}
+.wdg.cal .ev{border-left:3px solid #ff9f0a;padding-left:6px;font-size:12px;line-height:1.3}
+.wdg.cal .ev small{color:#8e8e93;display:block}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px 0;justify-items:center}
+.app{display:flex;flex-direction:column;align-items:center;gap:5px;font-size:11.5px;width:76px;text-align:center;color:#fff}
+.app .ic{width:62px;height:62px;border-radius:14px;overflow:hidden;display:block;box-shadow:0 1px 3px rgba(0,0,0,.4)}
+.app .ic svg{width:100%;height:100%;display:block}
+.app span.lb{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:76px;text-shadow:0 1px 2px rgba(0,0,0,.5)}
+.app:active .ic{filter:brightness(.7)}
+.badge{position:absolute;top:-6px;right:-6px;background:var(--red);color:#fff;font-size:12px;font-weight:600;min-width:22px;height:22px;border-radius:11px;display:grid;place-items:center;padding:0 6px}
+.icw{position:relative}
+.pager{display:flex;gap:7px;justify-content:center;margin:auto 0 12px;padding:6px 10px;background:rgba(40,36,30,.4);border-radius:12px;align-self:center}
+.pager i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.35)}
+.pager i.on{background:#fff}
+.dock{display:grid;grid-template-columns:repeat(4,1fr);justify-items:center;background:rgba(60,55,48,.45);backdrop-filter:blur(26px) saturate(1.5);-webkit-backdrop-filter:blur(26px) saturate(1.5);border-radius:32px;padding:14px 6px}
+.dock .lb{display:none}
+
+@media (max-height:760px){.widgets{display:none}}
+.callv{flex:1;display:flex;flex-direction:column;align-items:center;padding:60px 24px 50px;background:linear-gradient(180deg,#2b2a28,#121212)}
+.cst{color:rgba(255,255,255,.7);font-size:16px;text-align:center;min-height:22px}
+.cnm{font-size:34px;font-weight:500;margin-top:8px;text-align:center}
+.cnum{color:rgba(255,255,255,.6);font-size:15px;margin-top:4px}
+.cgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px 28px;margin-top:auto;font-size:12px;text-align:center}
+.cgrid span{display:flex;flex-direction:column;align-items:center;gap:7px}
+.cgrid i{width:74px;height:74px;border-radius:50%;background:rgba(255,255,255,.14)}
+.cend{width:74px;height:74px;border-radius:50%;background:#ff3b30;display:grid;place-items:center;margin-top:40px}
+/* 앱 공통 */
+.app-screen{background:var(--bg)}
+#view{flex:1;display:flex;flex-direction:column;min-height:0;position:relative}
+.nav{flex:none;display:flex;align-items:center;min-height:44px;padding:0 8px;position:relative}
+.nav .bk{color:var(--tint);font-size:17px;display:flex;align-items:center;gap:2px;padding:8px 6px;max-width:42%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav .bk svg{flex:none}
+.nav .ttl{position:absolute;left:50%;transform:translateX(-50%);font-size:17px;font-weight:600;max-width:52%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
+.nav .rt{margin-left:auto;color:var(--tint);font-size:17px;padding:8px}
+.large{font-size:34px;font-weight:700;margin:0;padding:2px 18px 10px;letter-spacing:-.01em}
+.scroll{flex:1;overflow-y:auto;overscroll-behavior:contain;padding-bottom:40px;scrollbar-width:none}
+.scroll::-webkit-scrollbar{display:none}
+.search{margin:0 16px 12px;background:var(--cell);border-radius:10px;padding:8px 10px;color:var(--sec);font-size:16px;display:flex;gap:6px;align-items:center}
+.group{margin:0 16px 22px;background:var(--cell);border-radius:11px;overflow:hidden}
+.gtitle{font-size:13px;color:var(--sec);padding:0 32px 6px;text-transform:uppercase}
+.cell{display:flex;align-items:center;gap:12px;width:100%;padding:11px 16px;min-height:44px;position:relative;text-align:left}
+.cell+.cell::before{content:"";position:absolute;top:0;left:16px;right:0;height:.5px;background:var(--sep)}
+.cell.ind+.cell.ind::before,.cell.ind+.cell::before{left:58px}
+.cell .grow{flex:1;min-width:0}
+.cell .val{color:var(--sec);font-size:16px}
+.chev{color:var(--ter);flex:none}
+.sic{width:30px;height:30px;border-radius:7px;display:grid;place-items:center;flex:none}
+.sic svg{width:19px;height:19px}
+.toggle{width:51px;height:31px;border-radius:16px;background:#39393d;position:relative;flex:none}
+.toggle::after{content:"";position:absolute;left:2px;top:2px;width:27px;height:27px;border-radius:50%;background:#fff;transition:transform .2s}
+.toggle.on{background:var(--green)}
+.toggle.on::after{transform:translateX(20px)}
+.check{color:var(--tint);font-weight:600}
+.empty{color:var(--sec);text-align:center;padding:40px 20px;font-size:15px}
+.toast{position:absolute;left:50%;top:64px;transform:translateX(-50%);background:rgba(44,44,46,.96);padding:10px 16px;border-radius:14px;font-size:14px;z-index:60;max-width:84%;text-align:center;pointer-events:none;transition:opacity .25s;box-shadow:0 8px 30px rgba(0,0,0,.5)}
+
+/* 메시지 */
+.trow{display:flex;gap:12px;align-items:center;width:100%;padding:0 0 0 16px;text-align:left}
+.trow .tx{flex:1;min-width:0;padding:11px 16px 11px 0;border-bottom:.5px solid var(--sep)}
+.trow .tp{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.trow .nm{font-weight:600;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.trow .tm{color:var(--sec);font-size:14px;flex:none;display:flex;align-items:center;gap:4px}
+.trow .pv{color:var(--sec);font-size:15px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:2px}
+.av{width:46px;height:46px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:18px;font-weight:600;color:#fff;background:linear-gradient(180deg,#a5a5aa,#7d7d82)}
+.av.sm{width:34px;height:34px;font-size:14px}
+.av.lg{width:90px;height:90px;font-size:36px}
+.av svg{width:60%;height:60%}
+.pinned{display:flex;justify-content:center;gap:24px;padding:4px 16px 14px;border-bottom:.5px solid var(--sep)}
+.pinned button{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;color:var(--sec)}
+.pinned .av{width:72px;height:72px;font-size:28px}
+.chat-head{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;color:var(--text);padding:0 0 8px;border-bottom:.5px solid var(--sep);background:rgba(28,28,30,.7)}
+.chat{padding:8px 14px 18px;display:flex;flex-direction:column}
+.cday{align-self:center;font-size:11.5px;color:var(--sec);margin:16px 0 6px;font-weight:500;text-align:center}
+.cday b{font-weight:600}
+.bub{max-width:76%;padding:7px 12px;border-radius:18px;font-size:16px;line-height:1.35;background:#262628;align-self:flex-start;margin-top:2px;word-break:break-word;position:relative}
+.bub.me{background:var(--tint);align-self:flex-end}
+.bub.gap{margin-top:8px}
+.bub.link,.bub.loc{padding:0;overflow:hidden;width:240px}
+.bub .lk-img{height:110px;background:linear-gradient(135deg,#f3e2c6,#d9a066);display:grid;place-items:center}
+.bub .lk-tx{padding:8px 12px;background:#2c2c2e}
+.bub .lk-tx small{display:block;color:var(--sec);font-size:12px}
+.bub .map-img{height:120px;display:block;width:100%}
+.read{align-self:flex-end;font-size:11px;color:var(--sec);margin:3px 4px 0}
+.compose{flex:none;display:flex;gap:8px;align-items:center;padding:8px 12px 30px}
+.compose .plus{width:34px;height:34px;border-radius:50%;background:var(--cell2);display:grid;place-items:center;color:var(--sec);font-size:22px;flex:none}
+.compose .in{flex:1;border:1px solid var(--sep);border-radius:18px;padding:7px 14px;color:var(--ter);font-size:16px}
+
+/* 전화 */
+.tabs{flex:none;display:grid;grid-template-columns:repeat(3,1fr);padding:6px 0 28px;border-top:.5px solid var(--sep);background:rgba(18,18,18,.94)}
+.tabs button{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10px;color:var(--sec)}
+.tabs button.on{color:var(--tint)}
+.tabs svg{width:26px;height:26px}
+.seg{display:flex;margin:0 16px 10px;background:#1c1c1e;border-radius:9px;padding:2px}
+.seg button{flex:1;padding:6px;border-radius:7px;font-size:13px;font-weight:500;text-align:center;color:#fff}
+.seg button.on{background:#636366}
+.crow{display:flex;align-items:center;gap:10px;width:100%;padding:0 0 0 16px;text-align:left}
+.crow .tx{flex:1;min-width:0;display:flex;align-items:center;gap:8px;padding:9px 16px 9px 0;border-bottom:.5px solid var(--sep)}
+.crow .nm{font-size:17px;font-weight:600}
+.crow .nm.miss{color:var(--red)}
+.crow .kd{font-size:14px;color:var(--sec)}
+.crow .tm{margin-left:auto;color:var(--sec);font-size:15px;white-space:nowrap}
+.crow .ii{color:var(--tint)}
+.idx{font-size:15px;font-weight:600;color:var(--sec);padding:10px 16px 4px;border-bottom:.5px solid var(--sep);margin-left:0}
+.lrow{display:block;width:100%;text-align:left;padding:10px 16px;border-bottom:.5px solid var(--sep);font-size:17px}
+.lrow small{color:var(--sec);font-size:13px;margin-left:8px}
+.me-card{display:flex;align-items:center;gap:14px;padding:6px 16px 14px;border-bottom:.5px solid var(--sep)}
+.me-card b{font-size:20px;display:block}
+.me-card small{color:var(--sec)}
+.chead{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 16px 18px}
+.chead h2{margin:4px 0 0;font-size:28px;font-weight:600}
+.chead small{color:var(--sec);font-size:14px}
+.acts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 16px 18px}
+.acts button{background:var(--cell);border-radius:10px;padding:8px 0;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--tint);font-size:11px}
+.acts svg{width:22px;height:22px}
+.fld{padding:10px 16px}
+.fld small{display:block;font-size:14px;color:var(--text)}
+.fld span{color:var(--tint);font-size:17px;font-variant-numeric:tabular-nums}
+.fld span.plain{color:var(--text)}
+
+/* 캘린더 */
+.cal-head{display:flex;align-items:center;justify-content:space-between;padding:0 16px 6px}
+.cal-head h2{font-size:28px;margin:0;font-weight:700}
+.cal-head h2 span{color:var(--red)}
+.cal-head .arr{display:flex;gap:4px}
+.cal-head .arr button{color:var(--red);width:36px;height:36px;display:grid;place-items:center}
+.wk{display:grid;grid-template-columns:repeat(7,1fr);font-size:11px;color:var(--sec);text-align:center;padding:4px 8px;border-bottom:.5px solid var(--sep)}
+.mon{display:grid;grid-template-columns:repeat(7,1fr);padding:4px 8px}
+.mon button{display:flex;flex-direction:column;align-items:center;height:52px;padding-top:6px;border-top:.5px solid #1f1f21;gap:4px}
+.mon .n{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:18px}
+.mon .sun{color:var(--sec)}
+.mon .today .n{background:var(--red);color:#fff;font-weight:600}
+.mon .sel .n{background:#fff;color:#000;font-weight:600}
+.mon .today.sel .n{background:var(--red);color:#fff}
+.mon .dot{width:5px;height:5px;border-radius:50%;background:transparent}
+.mon .dot.on{background:#8e8e93}
+.evlist{border-top:.5px solid var(--sep);padding:6px 0}
+.ev{display:flex;gap:12px;padding:10px 16px;align-items:stretch}
+.ev .tm{width:56px;color:var(--sec);font-size:14px;text-align:right}
+.ev .bar{width:4px;border-radius:2px;background:#ff9f0a}
+.ev .tt{font-size:16px}
+
+/* 메모 */
+.nrow{display:block;width:100%;text-align:left;padding:10px 16px;position:relative}
+.nrow+.nrow::before{content:"";position:absolute;top:0;left:16px;right:0;height:.5px;background:var(--sep)}
+.nrow b{font-size:17px;font-weight:600;display:flex;gap:6px;align-items:center}
+.nrow small{color:var(--sec);font-size:15px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.nrow small em{font-style:normal;color:#aeaeb2;margin-right:8px}
+.note{padding:4px 20px 30px}
+.note .nd{color:var(--sec);font-size:13px;text-align:center;margin-bottom:14px}
+.note h2{font-size:26px;margin:0 0 10px;font-weight:700}
+.note pre{font:inherit;font-size:17px;line-height:1.6;white-space:pre-wrap;margin:0}
+.locked{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:30px;color:var(--sec)}
+.locked b{color:var(--text);font-size:20px}
+.locked .btn{color:var(--tint);font-size:17px;margin-top:6px}
+
+/* 사진 */
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.pgrid button{aspect-ratio:1;overflow:hidden;display:block;background:#1a1a1a}
+.pgrid svg{width:100%;height:100%;display:block}
+.pcount{text-align:center;color:var(--text);font-size:15px;font-weight:600;padding:18px 0 4px}
+.pcount small{display:block;color:var(--sec);font-weight:400;font-size:13px;margin-top:2px}
+.viewer{flex:1;display:flex;flex-direction:column;justify-content:center;background:#000;min-height:0}
+.viewer svg{width:100%;height:auto;max-height:100%;display:block}
+.pmeta{text-align:center;padding:4px 0 6px}
+.pmeta b{font-size:15px;display:block}
+.pmeta small{color:var(--sec);font-size:12px}
+
+/* 브라우저 */
+.urlbar{flex:none;margin:8px 12px 30px;background:#2c2c2e;border-radius:12px;padding:10px 14px;font-size:15px;display:flex;align-items:center;justify-content:center;gap:6px;color:#fff}
+.page{background:#fff;color:#1c1c1e;flex:1;overflow-y:auto;scrollbar-width:none}
+.page::-webkit-scrollbar{display:none}
+.pg-hero{padding:28px 20px;text-align:center}
+.pg-body{padding:16px 20px 40px;font-size:15px;line-height:1.75}
+.pg-body h3{font-size:17px;margin:18px 0 6px}
+.pg-tbl{width:100%;border-collapse:collapse;font-size:14px;margin:10px 0}
+.pg-tbl td{color:#1c1c1e;font-size:14px;border-bottom:1px solid #e5e5ea;padding:8px 4px;vertical-align:top}
+.pg-tbl td:first-child{color:#6e6e73;width:34%}
+.fav{display:grid;grid-template-columns:repeat(4,1fr);gap:14px 6px;padding:0 16px 20px}
+.fav button{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11px;color:var(--sec);text-align:center}
+.fav .fi{width:60px;height:60px;border-radius:12px;background:var(--cell);display:grid;place-items:center;font-size:22px;font-weight:700;color:#fff}
+
+/* 동영상 */
+.vtop{display:flex;align-items:center;gap:8px;padding:0 16px 10px;font-weight:700;font-size:19px}
+.vtop .lg{width:30px;height:22px;border-radius:6px;background:#e5e5ea;display:grid;place-items:center}
+.chips{display:flex;gap:8px;padding:0 16px 12px;overflow-x:auto;scrollbar-width:none}
+.chips button{flex:none;background:#272727;border-radius:8px;padding:6px 12px;font-size:14px}
+.chips button.on{background:#f1f1f1;color:#0f0f0f}
+.vcard{display:block;width:100%;text-align:left;margin-bottom:18px}
+.thumb{position:relative;aspect-ratio:16/9;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.thumb .big{font-size:62px;font-weight:900;letter-spacing:-.02em;text-shadow:0 4px 0 rgba(0,0,0,.45);transform:rotate(-3deg)}
+.thumb .dur{position:absolute;right:8px;bottom:8px;background:rgba(0,0,0,.8);font-size:12px;padding:1px 5px;border-radius:4px;font-weight:600}
+.thumb .bar{position:absolute;left:0;bottom:0;height:3px;background:#f00}
+.vmeta{display:flex;gap:12px;padding:10px 14px 0}
+.vmeta .av{width:36px;height:36px;font-size:14px}
+.vmeta b{font-size:15px;font-weight:500;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.vmeta small{color:#aaa;font-size:12.5px;display:block;margin-top:3px}
+.vplay{position:relative}
+.vplay .pb{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:64px;height:64px;border-radius:50%;background:rgba(0,0,0,.55);display:grid;place-items:center;cursor:pointer}
+
+/* 지도 */
+.mapwrap{flex:1;position:relative;min-height:0;background:#1d2126}
+.mapwrap > svg{position:absolute;inset:0;width:100%;height:100%}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:rgba(28,28,30,.97);border-radius:14px 14px 0 0;padding:8px 0 30px;max-height:44%;overflow-y:auto;scrollbar-width:none}
+.sheet .grab{width:36px;height:5px;border-radius:3px;background:#48484a;margin:0 auto 8px}
+.pin{cursor:pointer}
+
+/* 시계 */
+.alarm{display:flex;align-items:center;padding:12px 16px;border-bottom:.5px solid var(--sep)}
+.alarm .tt{font-size:52px;font-weight:300;line-height:1;font-variant-numeric:tabular-nums}
+.alarm .tt small{font-size:22px}
+.alarm .lb{font-size:14px;color:var(--text)}
+.alarm.off .tt,.alarm.off .lb{color:var(--sec)}
+
+/* 날씨 */
+.wx{flex:1;overflow-y:auto;scrollbar-width:none;background:linear-gradient(180deg,#0f1f3a 0%,#1a3358 45%,#25426d 100%);text-align:center;padding:20px 16px 40px}
+.wx h2{font-size:32px;font-weight:400;margin:10px 0 0}
+.wx .big{font-size:96px;font-weight:200;line-height:1}
+.wx .card{background:rgba(255,255,255,.1);border-radius:16px;padding:12px;margin-top:16px;text-align:left}
+.wx .card small{color:rgba(255,255,255,.65);font-size:12px;display:block;padding-bottom:8px;border-bottom:.5px solid rgba(255,255,255,.2);margin-bottom:8px}
+.hrs{display:flex;justify-content:space-between;text-align:center;font-size:14px}
+.hrs div{display:flex;flex-direction:column;gap:8px;align-items:center}
+.days div{display:grid;grid-template-columns:60px 30px 1fr;gap:10px;align-items:center;padding:6px 0;font-size:16px}
+.days .rng{height:4px;border-radius:2px;background:linear-gradient(90deg,#5ac8fa,#ffcc00)}
+
+/* 카메라 */
+.cam{flex:1;background:#000;display:flex;flex-direction:column;position:relative}
+.cam .vf{flex:1;margin:40px 0 0;background:radial-gradient(70% 50% at 50% 50%,#2b2a26,#0c0b0a);position:relative;overflow:hidden}
+.cam .vf::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.12) 1px,transparent 1px);background-size:33.33% 33.33%}
+.cam .modes{display:flex;justify-content:center;gap:18px;font-size:13px;padding:12px 0;color:#ddd;letter-spacing:.04em}
+.cam .modes b{color:var(--amber);font-weight:600}
+.cam .ctrl{display:flex;align-items:center;justify-content:space-around;padding:6px 20px 40px}
+.cam .shot{width:72px;height:72px;border-radius:50%;border:4px solid #fff;display:grid;place-items:center}
+.cam .shot i{width:58px;height:58px;border-radius:50%;background:#fff}
+.cam .lastp{width:46px;height:46px;border-radius:8px;overflow:hidden;background:#222}
+.cam .lastp svg{width:100%;height:100%}
+.flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;transition:opacity .3s}
+
+/* 음악 */
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:0 16px 20px}
+.mgrid button{text-align:left;font-size:14px}
+.mgrid .art{aspect-ratio:1;border-radius:10px;margin-bottom:6px}
+.mini{flex:none;display:flex;align-items:center;gap:12px;margin:0 10px 6px;background:#2c2c2e;border-radius:14px;padding:8px 12px}
+.mini .art{width:40px;height:40px;border-radius:6px;flex:none}
+.mini span{flex:1;font-size:15px}
+
+/* 메일 */
+.mrow{display:block;width:100%;text-align:left;padding:10px 16px 10px 28px;border-bottom:.5px solid var(--sep);position:relative}
+.mrow .tp{display:flex;justify-content:space-between;gap:8px}
+.mrow b{font-size:16px}
+.mrow .tm{color:var(--sec);font-size:14px;flex:none}
+.mrow .sj{font-size:15px;margin-top:2px}
+.mrow .pv{color:var(--sec);font-size:14px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mrow.unread::before{content:"";position:absolute;left:10px;top:16px;width:10px;height:10px;border-radius:50%;background:var(--tint)}
+.mail{padding:6px 18px 40px}
+.mail .from{display:flex;gap:12px;align-items:center;padding-bottom:12px;border-bottom:.5px solid var(--sep)}
+.mail h2{font-size:21px;margin:14px 0}
+.mail pre{font:inherit;font-size:16px;line-height:1.65;white-space:pre-wrap;margin:0}
+@media (prefers-reduced-motion:reduce){.toggle::after,.flash{transition:none}.dots.shake{animation:none}}
+</style>
+
+</head>
+<body>
+<div class="phone" id="phone">
+  <div class="island"></div>
+  <section class="screen wall" id="lock" aria-label="lock"></section>
+  <section class="screen wall" id="pin" hidden aria-label="passcode"></section>
+  <section class="screen wall" id="home" hidden aria-label="home"></section>
+  <section class="screen app-screen" id="appScreen" hidden>
+    <div class="status" id="appStatus"></div>
+    <div id="view"></div>
+  </section>
+  <div class="homebar"></div>
+  <button class="homebar-hit" id="homeHit" aria-label="home"></button>
+  <div class="toast" id="toast" style="opacity:0"></div>
+</div>
+<div class="foot" id="foot"></div>
+
+<script>
+/* ===== 기준 시점: 2022-11-10 (木) 23:48 ===== */
+const TODAY = '2022-11-10';
+
+/* 연락처 (저장명은 언어 전환과 무관) */
+const people = {
+  kirishima:{name:'霧嶋 凛道', yomi:'きりしま りんどう', ko:'키리시마 린도', tel:'090-6152-0918', row:'か'},
+  momoe:    {name:'草樹 百恵', yomi:'くさき ももえ', ko:'쿠사키 모모에', tel:'080-3391-0409', row:'か'},
+  sasara:   {name:'佐々羅 透李', yomi:'ささら とおり', ko:'사사라 토오리', tel:'090-2274-0316', row:'さ', sub:['東雲大学附属病院','시노노메 대학 부속 병원']},
+  ikka:     {name:'捜査一課', yomi:'そうさいっか', ko:'수사 1과', tel:'03-3581-4321', row:'さ'},
+  takanashi:{name:'高梨 管理官', yomi:'たかなし', ko:'타카나시 관리관', tel:'090-5530-1187', row:'た'},
+  father:   {name:'父', yomi:'ちち', ko:'아버지', tel:'075-781-2206', row:'た', sub:['自宅','집 전화']},
+  wife:     {name:'妻', yomi:'つま', ko:'아내', tel:'090-8826-4430', row:'た'},
+  nirasawa: {name:'韮澤 理紫', yomi:'にらさわ さとし', ko:'니라사와 사토시', tel:'090-1973-0326', row:'な'},
+  mother:   {name:'母', yomi:'はは', ko:'어머니', tel:'080-6620-4419', row:'は'},
+  hayakawa: {name:'鑑識 早川', yomi:'はやかわ', ko:'감식 하야카와', tel:'090-3318-7742', row:'は'},
+  hebihara: {name:'蛇原 辰巳', yomi:'へびはら たつみ', ko:'헤비하라 타츠미', tel:'080-4105-0506', row:'は', sub:['青梅警察署 地域課','오메 경찰서 지역과']},
+  momoshita:{name:'桃下 冬香', yomi:'ももした とうか', ko:'모모시타 토우카', tel:'090-7724-1203', row:'ま'},
+  oldK:     {name:'090-4418-2731', yomi:'', ko:'', tel:'090-4418-2731', unsaved:true},
+  spamA:    {name:'070-5528-3916', tel:'070-5528-3916', unsaved:true},
+  spamB:    {name:'+81 50-3172-0884', tel:'+81 50-3172-0884', unsaved:true},
+  dental:   {name:'03-6450-7718', tel:'03-6450-7718', unsaved:true},
+  cleaning: {name:'03-3442-1150', tel:'03-3442-1150', unsaved:true},
+  auth:     {name:'SMS認証', tel:'SMS', unsaved:true},
+  group:    {name:'捜査一課 九条班', tel:'', unsaved:true, group:true}
+};
+const contactOrder = ['kirishima','momoe','sasara','ikka','takanashi','father','wife','nirasawa','mother','hayakawa','hebihara','momoshita'];
+
+/* 메시지: [날짜, 시각, 내가 보냄(1), 일본어, 한국어] 또는 {d,t,me,link|loc} */
+const threads = {
+ momoe:[
+  ['2020-12-01','08:47',0,'班長、申し訳ありません！電車が遅れていて、少し遅れそうです……！','반장님, 죄송합니다! 전철이 늦어져서 조금 늦을 것 같아요……!'],
+  ['2020-12-01','08:58',0,'本当に申し訳ありません……！','정말 죄송합니다……!'],
+  ['2020-12-02','22:10',0,'今日の聞き込みの記録です。確認お願いします','오늘 탐문 기록이에요. 확인 부탁드려요'],
+  ['2020-12-02','23:40',1,'読んだ。二人目の証言は裏が取れていない。明日やり直したまえ','읽었네. 두 번째 증언은 뒷받침이 안 됐어. 내일 다시 하게'],
+  ['2020-12-02','23:41',0,'わかりました！','알겠습니다!'],
+  ['2021-02-18','19:20',0,'報告書、デスクに置いておきました','보고서 책상에 두었어요'],
+  ['2021-02-18','21:02',1,'了解した','알았네'],
+  ['2021-05-26','06:12',0,'張り込みの交代って何時でしたっけ……？','잠복 교대가 몇 시였죠……?'],
+  ['2021-05-26','06:30',1,'八時','여덟 시'],
+  ['2021-08-19','13:05',0,'班長、お昼ちゃんと食べました？','반장님, 점심 제대로 드셨어요?'],
+  ['2021-11-04','12:10',0,'班長！お弁当作りすぎちゃったんですけど……いりますか？','반장님! 도시락을 너무 많이 싸 왔는데…… 드실래요?'],
+  ['2021-11-04','12:31',1,'いらん','필요 없어'],
+  ['2021-11-04','12:33',1,'……机に置いておけ','……책상에 둬'],
+  ['2021-11-05','09:40',0,'お弁当箱、洗って返してくれたんですね！ありがとうございます！','도시락통 씻어서 돌려주셨네요! 고마워요!'],
+  ['2021-12-08','17:44',0,'班長、来週ここ行っちゃだめですか？🥺','반장님, 다음 주에 여기 가면 안 돼요? 🥺'],
+  {d:'2021-12-08',t:'17:44',me:0,link:{title:['パティスリー・ミエル｜駅前本店','파티스리 미엘｜역 앞 본점'],site:'miel-patisserie.jp'}},
+  ['2021-12-08','17:59',1,'わかったから仕事しろ','알았으니까 일이나 해'],
+  ['2021-12-08','18:00',0,'やった！！','야호!!'],
+  ['2021-12-15','12:20',0,'予約取れました！金曜の七時です！','예약했어요! 금요일 일곱 시예요!'],
+  ['2021-12-15','12:41',1,'ああ','그래'],
+  ['2022-02-14','08:30',0,'机の引き出し、見てください！','책상 서랍 봐 주세요!'],
+  ['2022-02-14','10:02',1,'甘い','달다'],
+  ['2022-02-14','10:03',0,'甘いの好きですよね？','단 거 좋아하시잖아요?'],
+  ['2022-02-14','10:20',1,'……悪くない','……나쁘지 않아'],
+  ['2022-02-14','10:20',0,'よかったぁ……！','다행이다……!'],
+  ['2022-04-09','00:00',1,'誕生日だろ','생일이지'],
+  ['2022-04-09','00:02',0,'えっ、覚えててくれたんですか！？','어, 기억해 주신 거예요!?'],
+  ['2022-04-09','00:03',1,'書類に書いてあった','서류에 적혀 있었어'],
+  ['2022-04-09','00:03',0,'それでも嬉しいです！ありがとうございます！','그래도 기뻐요! 고마워요!'],
+  ['2022-04-21','23:12',0,'昨日のこと、気にしないでください。明日からもいつも通りでお願いします','어제 일은 신경 쓰지 마세요. 내일부터도 평소처럼 부탁드려요'],
+  ['2022-05-13','23:41',1,'起きてるか','깨어 있냐'],
+  ['2022-05-13','23:41',0,'はい','네'],
+  ['2022-05-13','23:42',1,'今から行く','지금 갈게'],
+  ['2022-05-13','23:42',0,'えっ、雨すごいですよ！？','네? 비 엄청 와요!?'],
+  ['2022-05-13','23:50',0,'班長？','반장님?'],
+  ['2022-05-13','23:58',0,'傘持ってますか！？','우산 있어요!?'],
+  ['2022-06-04','10:15',1,'鍵は郵便受けに入れておく','열쇠는 우편함에 넣어 둘게'],
+  ['2022-06-04','10:16',0,'荷物、午後に届きます！よろしくお願いします！','짐은 오후에 도착해요! 잘 부탁드려요!'],
+  ['2022-06-04','10:30',1,'部屋は空けてある','방은 비워 뒀어'],
+  ['2022-08-02','10:14',0,'班長ぉ……','반장니임……'],
+  ['2022-08-02','10:14',0,'温泉……','온천……'],
+  ['2022-08-02','10:15',0,'😭😭😭😭😭😭','😭😭😭😭😭😭'],
+  ['2022-08-02','10:40',1,'うるさい。仕事中だ','시끄러워. 일하는 중이야'],
+  ['2022-08-02','10:41',0,'行かないとは言ってないですよね！？','안 간다고는 안 하셨잖아요!?'],
+  ['2022-08-02','10:52',1,'夏は無理だ。事件が詰まってる','여름은 무리야. 사건이 밀려 있어'],
+  ['2022-08-02','10:52',0,'じゃあいつならいいんですか！！😭😭😭','그럼 언제면 되는데요!! 😭😭😭'],
+  ['2022-08-02','11:30',1,'……冬','……겨울'],
+  ['2022-08-02','11:30',0,'約束ですよ！！！','약속한 거예요!!!'],
+  ['2022-09-21','08:55',0,'班長、今日の私の髪型どうでした？','반장님, 오늘 제 머리 어땠어요?'],
+  ['2022-09-21','09:20',1,'寝癖かと思った','까치집인 줄 알았어'],
+  ['2022-09-21','09:20',0,'ひどい！！！','너무해요!!!'],
+  ['2022-09-21','09:20',0,'😭😭😭😭😭😭😭😭','😭😭😭😭😭😭😭😭'],
+  ['2022-09-21','09:21',1,'通知がうるさい。連打するな','알림 시끄러워. 연타하지 마'],
+  ['2022-09-21','09:21',0,'😭','😭'],
+  ['2022-10-25','21:03',0,'班長！これ一緒に行きませんか！？','반장님! 이거 같이 안 갈래요!?'],
+  {d:'2022-10-25',t:'21:03',me:0,link:{title:['「ちいかわ」ポップアップストア　東京駅で11月19日から開催','\'치이카와\' 팝업 스토어　도쿄역에서 11월 19일부터 개최'],site:'news.pop-event.jp',img:'pop'}},
+  ['2022-10-25','21:20',1,'なんだこれは','이게 뭐냐'],
+  ['2022-10-25','21:20',1,'ネズミか','쥐냐'],
+  ['2022-10-25','21:21',0,'ネズミじゃないです！！ちいかわです！！','쥐 아니에요!! 치이카와예요!!'],
+  ['2022-10-25','21:24',1,'どれも同じだろ','다 똑같잖아'],
+  ['2022-10-25','21:24',0,'班長のばか！！！😭😭😭😭😭😭😭','반장님 바보!!! 😭😭😭😭😭😭😭'],
+  ['2022-10-25','21:24',0,'😭😭😭😭😭😭😭😭😭😭','😭😭😭😭😭😭😭😭😭😭'],
+  ['2022-10-25','21:25',1,'うるさい','시끄러워'],
+  ['2022-10-25','21:41',1,'……何時からだ','……몇 시부터냐'],
+  ['2022-10-25','21:41',0,'！！！','!!!'],
+  ['2022-10-25','21:41',0,'土曜の十時です！！整理券もらってきます！！','토요일 열 시요!! 정리권 받아 올게요!!'],
+  ['2022-11-02','23:50',1,'十二月十日、空けておけ','12월 10일 비워 둬'],
+  ['2022-11-02','23:50',0,'え？','네?'],
+  ['2022-11-02','23:52',1,'由布院。離れで、部屋に露天風呂がある','유후인. 별채고, 방에 노천탕 있어'],
+  ['2022-11-02','23:52',0,'😭😭😭😭😭😭😭😭😭','😭😭😭😭😭😭😭😭😭'],
+  ['2022-11-02','23:52',0,'班長ぉぉぉ！！！','반장니이이임!!!'],
+  ['2022-11-02','23:53',1,'泣くな。うるさい','울지 마. 시끄러워'],
+  ['2022-11-02','23:53',0,'覚えててくれたんですね！！','기억하고 계셨네요!!'],
+  ['2022-11-02','23:55',1,'飛行機も取った。寝ろ','비행기도 잡았어. 자'],
+  ['2022-11-09','17:20',1,'カモミールでいいのか','캐모마일이면 되냐'],
+  ['2022-11-09','17:22',0,'え？','네?'],
+  ['2022-11-09','17:22',1,'切れてただろ','다 떨어졌던데'],
+  ['2022-11-09','17:26',0,'……はい！それです！','……네! 그거예요!'],
+  ['2022-11-09','17:26',0,'ありがとうございます！','고마워요!'],
+  ['2022-11-10','18:02',0,'今日は定時で上がれそうです！班長は？','오늘은 정시에 퇴근할 수 있을 것 같아요! 반장님은요?'],
+  ['2022-11-10','18:40',1,'無理だ。先に帰れ','무리야. 먼저 가'],
+  ['2022-11-10','18:41',0,'えー！じゃあ帰りに美味しいもの買ってきてください！','에—! 그럼 오는 길에 맛있는 거 사 오세요!'],
+  ['2022-11-10','18:52',1,'台所には立つなよ','부엌에는 서지 마라'],
+  ['2022-11-10','18:52',0,'立ちませんよ！！','안 서요!!'],
+  ['2022-11-10','18:53',0,'唐揚げがいいです！','가라아게가 좋아요!'],
+  ['2022-11-10','21:15',0,'明日のケーキ、予約してきました！ウイスキーが入ったやつです！','내일 케이크 예약하고 왔어요! 위스키 들어간 거예요!'],
+  ['2022-11-10','21:52',1,'いらん','필요 없어'],
+  ['2022-11-10','21:52',1,'何時だ','몇 시야'],
+  ['2022-11-10','21:53',0,'七時に取りに行く予定です！帰りに車で一緒に寄りましょう！','일곱 시에 찾으러 가기로 했어요! 퇴근길에 차로 같이 들러요!'],
+  ['2022-11-10','22:30',1,'明日は定時で上がる','내일은 정시에 퇴근한다'],
+  ['2022-11-10','22:31',0,'はい！待ってます！','네! 기다릴게요!'],
+  ['2022-11-10','23:20',0,'まだ署ですか？','아직 서에 있어요?'],
+  ['2022-11-10','23:31',1,'今出た','지금 나왔어'],
+  ['2022-11-10','23:31',0,'唐揚げ……','가라아게……'],
+  ['2022-11-10','23:33',1,'買った','샀어'],
+  ['2022-11-10','23:33',0,'やったー！！！気をつけて帰ってきてくださいね！','야호!!! 조심히 들어와요!']
+ ],
+ nirasawa:[
+  ['2018-06-08','17:31',0,'班長！今日、中華行きませんか？いい店見つけたんですよ','반장님! 오늘 중화요리 먹으러 안 가실래요? 좋은 가게 찾았어요'],
+  ['2018-06-08','17:40',1,'奢らんぞ','안 사준다'],
+  ['2018-06-08','17:40',0,'割り勘でいいですって！','더치페이면 된다니까요!'],
+  ['2018-06-08','17:52',1,'七時','일곱 시'],
+  ['2018-09-21','18:05',0,'霧嶋も連れてっていいですか？あいつ一人で飯食ってるんで','키리시마도 데려가도 돼요? 걔 맨날 혼자 밥 먹어서요'],
+  ['2018-09-21','18:10',1,'好きにしろ','마음대로 해'],
+  ['2018-11-11','00:01',0,'班長、誕生日おめでとうございます！','반장님, 생일 축하드려요!'],
+  ['2018-11-11','07:30',1,'誰に聞いた','누구한테 들었냐'],
+  ['2018-11-11','07:31',0,'人事の書類です','인사 서류요'],
+  ['2019-02-15','09:12',0,'班長、また俺の机にチョコ置いたでしょ','반장님, 또 제 책상에 초콜릿 두셨죠'],
+  ['2019-02-15','09:12',0,'俺食べないって言ってるのに','저 안 먹는다니까요'],
+  ['2019-02-15','09:40',1,'食わんなら返せ','안 먹을 거면 돌려줘'],
+  ['2019-03-26','08:02',1,'今日だったな','오늘이었지'],
+  ['2019-03-26','08:03',0,'え、覚えててくれたんですか！','어, 기억해 주신 거예요!'],
+  ['2019-03-26','08:10',1,'中華でいいか','중화면 되냐'],
+  ['2019-03-26','08:10',0,'班長の奢りですね！','반장님이 쏘시는 거죠!'],
+  ['2019-06-13','20:44',0,'明日、妹の三者面談で午前休もらいます','내일 여동생 삼자 면담 때문에 오전 반차 쓸게요'],
+  ['2019-06-13','21:01',1,'行ってこい','다녀와'],
+  ['2019-10-16','22:14',0,'明日の聞き込み、俺が先に回っておきます','내일 탐문, 제가 먼저 돌아 둘게요'],
+  ['2019-10-16','22:30',1,'無理はするな','무리하지 마'],
+  ['2019-10-16','22:31',0,'了解です！','알겠습니다!'],
+  ['2019-10-17','13:08',0,'現着しました','현장 도착했습니다']
+ ],
+ group:[
+  ['2022-11-07','22:31',0,'三軒茶屋で強盗致傷。機捜から入電、臨場願います','산겐자야에서 강도치상. 기동수사대 연락, 현장 출동 바랍니다','kirishima'],
+  ['2022-11-07','22:33',1,'向かう。霧嶋君は機捜から初動の状況を聞いておきたまえ','가겠네. 키리시마 군은 기동수사대한테 초동 상황을 들어 두게'],
+  ['2022-11-07','22:33',0,'承知しました','알겠습니다','kirishima'],
+  ['2022-11-07','22:35',0,'私も向かいます','저도 가겠습니다','momoe'],
+  ['2022-11-08','09:02',0,'早川さんから足跡の鑑定結果、九条さん宛にメールが来ています','하야카와 씨한테서 족적 감정 결과, 쿠죠 씨 앞으로 메일이 와 있습니다','kirishima'],
+  ['2022-11-08','09:30',1,'確認した。量販店の線で当たれ','확인했어. 양판점 쪽으로 알아봐'],
+  ['2022-11-08','09:31',0,'販売店のリストを作ります','판매점 리스트를 만들겠습니다','kirishima'],
+  ['2022-11-09','13:12',0,'商店街側のカメラ、映像を回収しました','상점가 쪽 카메라 영상 회수했습니다','momoe'],
+  ['2022-11-09','13:20',1,'霧嶋君に回したまえ','키리시마 군에게 넘기게'],
+  ['2022-11-09','13:21',0,'はい','네','momoe'],
+  ['2022-11-09','15:44',0,'会議資料、共有フォルダに入れておきました','회의 자료 공유 폴더에 넣어 두었습니다','momoe'],
+  ['2022-11-09','16:02',1,'見た。草樹君、二頁目の数字が一つずれている','봤네. 쿠사키 군, 두 번째 페이지 숫자가 하나 어긋나 있어'],
+  ['2022-11-09','16:03',0,'すみません、直します','죄송합니다, 고치겠습니다','momoe'],
+  ['2022-11-10','12:15',0,'鑑識の早川さんから差し入れです。どら焼き、給湯室にあります','감식과 하야카와 씨가 간식 보내셨습니다. 도라야키, 탕비실에 있습니다','kirishima'],
+  ['2022-11-10','12:16',0,'いただきます','잘 먹겠습니다','momoe'],
+  ['2022-11-10','12:40',1,'一つ残しておけ','하나 남겨 둬'],
+  ['2022-11-10','12:41',0,'九条さんの分、机に置きました','쿠죠 씨 몫은 책상에 뒀습니다','kirishima'],
+  ['2022-11-10','18:05',0,'明日の聴取、十時からで先方と調整済みです','내일 청취는 10시부터로 상대 측과 조율 끝났습니다','kirishima'],
+  ['2022-11-10','18:20',1,'わかった','알았네']
+ ],
+ spamA:[
+  ['2022-11-06','12:41',0,'【宅配便】お客様宛にお荷物のお届けにあがりましたが不在の為持ち帰りました。下記よりご確認ください。 http://saihaitatsu-check.xyz/k','[택배] 고객님 앞으로 온 물건을 배달하러 갔으나 부재중이라 다시 가져갔습니다. 아래에서 확인해 주세요. http://saihaitatsu-check.xyz/k']
+ ],
+ spamB:[
+  ['2022-10-29','03:12',0,'【重要】お客様のカードのご利用を一時的に制限しております。至急ご本人確認をお願いします。 http://card-kakunin-support.top','[중요] 고객님 카드 이용을 일시적으로 제한하고 있습니다. 급히 본인 확인 부탁드립니다. http://card-kakunin-support.top']
+ ],
+ dental:[
+  ['2022-05-11','10:00',0,'【白金台デンタルクリニック】九条様　定期検診の時期になりました。ご予約をお待ちしております。','[시로카네다이 치과] 쿠죠 님　정기 검진 시기가 되었습니다. 예약을 기다리겠습니다.'],
+  ['2022-11-04','10:00',0,'【白金台デンタルクリニック】九条様　前回のご来院から半年が経過しました。お早めのご予約をおすすめします。','[시로카네다이 치과] 쿠죠 님　지난 방문 후 반년이 지났습니다. 빠른 예약을 권해 드립니다.']
+ ],
+ cleaning:[
+  ['2022-11-09','16:30',0,'【クリーニング白金】ワイシャツ5点、コート1点の仕上がりをお知らせします。お受け取りは20時まで。','[클리닝 시로카네] 와이셔츠 5점, 코트 1점 완성되었습니다. 수령은 저녁 8시까지.']
+ ],
+ auth:[
+  ['2022-11-08','00:39',0,'認証コード：482913　このコードを他人に教えないでください。','인증 코드: 482913　이 코드를 다른 사람에게 알려 주지 마세요.']
+ ],
+ oldK:[
+  ['2019-04-11','10:20',0,'霧嶋です。韮澤と現着しました','키리시마입니다. 니라사와와 현장 도착했습니다'],
+  ['2019-04-11','10:22',1,'そのまま待機','그대로 대기'],
+  ['2019-07-26','23:05',0,'韮澤が潰れたので送っていきます。明日は定刻に来させます','니라사와가 뻗어서 데려다주겠습니다. 내일은 제시간에 오게 하겠습니다'],
+  ['2019-07-26','23:09',1,'頼む','부탁한다'],
+  ['2019-10-17','13:41',0,'桃下さんと向かっています。あと五分です','모모시타 씨와 가고 있습니다. 5분 남았습니다'],
+  ['2019-11-01','08:30',0,'本日付で機動捜査隊に異動となりました。お世話になりました','오늘부로 기동수사대로 이동하게 되었습니다. 신세 많이 졌습니다']
+ ],
+ kirishima:[
+  ['2021-10-18','07:50',0,'九条さん、霧嶋です。昨日お渡しした番号です。今日からまたよろしくお願いします','쿠죠 씨, 키리시마입니다. 어제 드린 번호입니다. 오늘부터 다시 잘 부탁드립니다'],
+  ['2021-10-18','08:15',1,'ああ。よろしく頼む','그래. 잘 부탁하지'],
+  ['2022-01-20','15:47',0,'例の被疑者、身柄確保しました','그 피의자, 신병 확보했습니다'],
+  ['2022-01-20','15:50',1,'ご苦労','수고했네'],
+  ['2022-07-12','09:14',0,'草樹さんがまだ来ていないのですが……','쿠사키 씨가 아직 안 왔는데요……'],
+  ['2022-07-12','09:15',1,'寝坊だ','늦잠이야'],
+  ['2022-07-12','09:15',0,'なぜ九条さんがご存じなんですか','쿠죠 씨가 그걸 어떻게 아십니까'],
+  ['2022-07-12','09:20',1,'仕事に戻りたまえ','일이나 하게'],
+  ['2022-10-12','19:02',0,'十七日、甲府に行かれますか','17일에 고후 가십니까'],
+  ['2022-10-12','19:30',1,'行く','가'],
+  ['2022-10-12','19:31',0,'では車を出します','그럼 제가 차를 내겠습니다'],
+  ['2022-10-12','19:40',1,'頼む','부탁해'],
+  ['2022-11-10','16:05',0,'聴取記録、デスクに置いておきました','청취 기록, 책상에 두었습니다'],
+  ['2022-11-10','16:30',1,'見た。二枚目の時系列、裏を取っておいてくれ','봤어. 두 번째 장 시간순, 뒷받침해 둬'],
+  ['2022-11-10','16:31',0,'承知しました','알겠습니다']
+ ],
+ momoshita:[
+  ['2019-11-26','21:10',0,'班長、さっきはありがとうございました。お店、予約できましたよ','반장님, 아까는 고마웠어요. 가게 예약했어요'],
+  ['2019-11-26','21:11',0,'十二月三日の二十時に、こちらでお願いしますね','12월 3일 저녁 8시에, 여기서 뵐게요'],
+  {d:'2019-11-26',t:'21:11',me:0,loc:{name:['西新宿パークタワーホテル 52階 バー','니시신주쿠 파크타워 호텔 52층 바'],addr:['東京都新宿区西新宿','도쿄도 신주쿠구 니시신주쿠']}},
+  ['2019-11-26','21:30',1,'わかった','알았네'],
+  ['2019-12-03','19:58',1,'すまない。上から仕事を回された。遅れる','미안하네. 위에서 일이 떨어졌어. 늦겠네'],
+  ['2019-12-03','20:46',1,'まだかかる','아직 걸려'],
+  ['2019-12-03','21:25',1,'今向かっている','지금 가고 있네'],
+  ['2019-12-04','08:05',0,'昨夜はありがとうございました。今日からよろしくお願いしますね、班長','어젯밤 고마웠어요. 오늘부터 잘 부탁드려요, 반장님'],
+  ['2019-12-04','08:30',1,'ああ','그래'],
+  ['2019-12-24','22:30',0,'班長、まだ署ですか？今夜くらい早く帰ってくださいね','반장님, 아직 서에 계세요? 오늘 밤 정도는 일찍 들어가세요'],
+  ['2019-12-24','23:58',1,'君に言われる筋合いはない','자네한테 들을 말은 아니네'],
+  ['2020-02-27','18:10',0,'例の窃盗、送検まで終わりました','그 절도 건, 송치까지 끝났어요'],
+  ['2020-02-27','18:30',1,'ご苦労','수고했네'],
+  ['2020-04-15','08:05',1,'車に煙草の匂いを残すな','차에 담배 냄새 남기지 마'],
+  ['2020-04-15','08:06',0,'すみません。窓、開けておきますね','죄송해요. 창문 열어 둘게요'],
+  ['2020-08-05','05:40',0,'港区で遺体発見。十字架に磔、胸部に銃創です。至急お願いします','미나토구에서 시신 발견. 십자가에 매달렸고 흉부에 총상이에요. 급히 와 주세요'],
+  ['2020-08-05','05:52',1,'向かう','가겠네'],
+  ['2020-09-03','08:12',0,'昨夜はちゃんと帰れましたか？だいぶ呑んでたので','어젯밤 잘 들어가셨어요? 꽤 드셨던데요'],
+  ['2020-09-03','08:40',1,'記憶にない','기억에 없네'],
+  ['2020-09-03','08:41',0,'呑みすぎると身体に悪いですよ？','과음하면 몸에 안 좋아요?'],
+  ['2020-10-31','06:20',0,'品川で四件目です','시나가와에서 네 번째예요'],
+  ['2020-10-31','06:21',1,'向かう','가겠네'],
+  ['2020-11-25','17:50',0,'来月から新しい子が来るそうです。班長の相棒に','다음 달부터 새로운 애가 온대요. 반장님 파트너로요'],
+  ['2020-11-25','18:02',1,'要らん','필요 없어'],
+  ['2020-11-25','18:03',0,'優しくしてあげてくださいね？','잘해 주세요?'],
+  ['2020-12-01','12:30',0,'マルボロ、吸いました？また感想聞かせてくださいね','말보로, 피워 보셨어요? 나중에 감상 들려주세요'],
+  ['2020-12-03','00:52',0,'班長、まだ署ですか？','반장님, 아직 서에 계세요?']
+ ],
+ hebihara:[
+  ['2020-06-10','19:30',0,'班長！報告書出しました！','반장님! 보고서 냈습니다!'],
+  ['2020-06-10','20:12',1,'誤字が四つある。直したまえ','오타가 네 개 있네. 고치게'],
+  ['2020-06-10','20:12',0,'うっす……','넵……'],
+  ['2020-08-06','07:12',0,'班長、すんません。しばらく休みもらいます','반장님, 죄송해요. 당분간 쉬겠습니다'],
+  ['2020-08-06','07:40',1,'ああ。こっちのことは気にするな','그래. 여기 일은 신경 쓰지 마'],
+  ['2020-08-24','21:30',0,'明日から戻ります。モズは俺が絶対捕まえます','내일부터 복귀합니다. 모즈는 제가 반드시 잡을 거예요'],
+  ['2020-08-24','22:05',1,'……ああ','……그래'],
+  ['2021-03-31','18:02',0,'班長、本日付で青梅署の地域課に異動になりました','반장님, 오늘부로 오메서 지역과로 전근 가게 됐습니다'],
+  ['2021-03-31','18:02',0,'今まで本当にお世話になりました！！','그동안 정말 감사했습니다!!'],
+  ['2021-03-31','18:03',0,'班長に怒られたこと、一生忘れないっす','반장님한테 혼난 거 평생 안 잊을게요'],
+  ['2021-03-31','19:40',1,'向こうでは誤字を減らせよ','거기서는 오타 좀 줄여'],
+  ['2021-03-31','19:41',0,'😭😭','😭😭'],
+  ['2022-11-10','20:10',0,'班長！！明日誕生日ってマジっすか！？','반장님!! 내일 생일이라는 거 진짜예요!?'],
+  ['2022-11-10','20:10',0,'百恵から聞きました','모모에한테 들었어요'],
+  ['2022-11-10','20:11',0,'今度本庁に顔出すんで、なんか持っていきます','다음에 본청 들를 때 뭐라도 들고 갈게요'],
+  ['2022-11-10','20:44',1,'要らん。自分の仕事をしたまえ','필요 없네. 자네 일이나 하게'],
+  ['2022-11-10','20:45',0,'うっす……','넵……']
+ ],
+ sasara:[
+  ['2020-08-05','15:30',0,'九条さん、お疲れ様です。検案終わりました。死因は胸部の銃創です','쿠죠 씨, 수고 많으십니다. 검안 끝났습니다. 사인은 흉부 총상입니다'],
+  ['2020-08-05','15:44',1,'詳しくは明朝聞く','자세한 건 내일 아침에 듣지'],
+  ['2020-10-03','20:10',0,'三件目、所見は前の二件と一致します。焼印も同じものでした','세 번째도 소견은 앞의 두 건과 일치합니다. 낙인도 같은 것이었습니다'],
+  ['2020-10-03','20:31',1,'わかった','알았네'],
+  ['2020-11-28','19:02',0,'九条さん、最近眠れていますか？桃下さんが顔色を心配していましたよ','쿠죠 씨, 요즘 잠은 잘 주무세요? 모모시타 씨가 안색을 걱정하던데요'],
+  ['2020-11-28','23:15',1,'問題ない','문제없네']
+ ],
+ mother:[
+  ['2022-01-01','00:10',0,'あけましておめでとう。今年も体に気をつけてね','새해 복 많이 받으렴. 올해도 몸 조심하고'],
+  ['2022-01-01','09:30',1,'おめでとう。母さんも','새해 복 많이 받아. 엄마도'],
+  ['2022-06-20','19:05',0,'お父さん、今日の診察で数値は落ち着いてるって','아버지 오늘 진료에서 수치는 안정됐대'],
+  ['2022-06-20','21:40',1,'そうか。次はいつ','그래. 다음은 언제야'],
+  ['2022-06-20','21:45',0,'来月の十五日。付き添いは私が行くから大丈夫よ','다음 달 15일. 같이 가는 건 내가 할 테니 괜찮아'],
+  ['2022-09-12','15:20',0,'時間がある時に電話ちょうだい','시간 될 때 전화 주렴'],
+  ['2022-09-12','18:02',1,'今夜かける','오늘 밤에 걸게'],
+  ['2022-11-06','10:30',0,'お正月は帰ってこられそう？お父さんも会いたがってるわよ','설에는 올 수 있겠니? 아버지도 보고 싶어 하셔'],
+  ['2022-11-06','22:15',1,'まだわからない。決まったら連絡する','아직 몰라. 정해지면 연락할게'],
+  ['2022-11-10','12:03',0,'真尋、明日はお誕生日ね','마히로, 내일 생일이구나'],
+  ['2022-11-10','12:03',0,'寒くなるから体に気をつけてね','추워지니까 몸 조심하렴'],
+  ['2022-11-10','12:40',1,'ありがとう。母さんこそ無理しないで','고마워. 엄마야말로 무리하지 마']
+ ],
+ wife:[
+  ['2022-07-06','14:22',0,'書類の件で、一度お会いできますか','서류 건으로 한번 뵐 수 있을까요'],
+  ['2022-07-06','20:10',1,'いつがいい','언제가 좋아'],
+  ['2022-07-06','20:31',0,'来週水曜の十四時に、こちらでお願いします','다음 주 수요일 오후 2시에, 여기서 부탁드려요'],
+  {d:'2022-07-06',t:'20:31',me:0,loc:{name:['丸の内ステーションホテル ロビーラウンジ','마루노우치 스테이션 호텔 로비 라운지'],addr:['東京都千代田区丸の内1丁目','도쿄도 지요다구 마루노우치 1초메']}},
+  ['2022-07-06','20:40',1,'わかった','알았어'],
+  ['2022-09-28','11:05',0,'記入したものを郵送しました。届いたらご確認ください','작성한 것을 우편으로 보냈어요. 도착하면 확인해 주세요'],
+  ['2022-09-30','22:15',1,'届いた','받았어'],
+  ['2022-10-19','10:48',0,'証人欄の件で、もう一度だけお時間をください','증인란 건으로 한 번만 더 시간 내주세요'],
+  {d:'2022-10-19',t:'10:48',me:0,loc:{name:['喫茶 あかさか','킷사 아카사카'],addr:['東京都港区赤坂3丁目','도쿄도 미나토구 아카사카 3초메']}},
+  ['2022-10-19','12:30',1,'行く','갈게']
+ ]
+};
+const threadOrder = ['momoe','hebihara','group','kirishima','mother','cleaning','auth','spamA','dental','spamB','wife','momoshita','sasara','oldK','nirasawa'];
+const pinnedThreads = ['momoe'];
+
+const calls = [
+ ['2022-11-10','18:38','momoe','out','0:42'],
+ ['2022-11-10','14:12','kirishima','in','3:05'],
+ ['2022-11-10','12:01','mother','miss'],
+ ['2022-11-09','09:12','ikka','in','1:18'],
+ ['2022-11-08','16:40','hayakawa','in','4:51'],
+ ['2022-11-07','22:40','hebihara','miss',null,3],
+ ['2022-11-05','20:10','mother','out','12:31'],
+ ['2022-11-02','10:15','takanashi','in','2:02'],
+ ['2022-10-19','12:31','wife','in','1:10'],
+ ['2022-10-17','07:20','kirishima','out','0:35']
+];
+
+/* 캘린더: 매년 점만 표시 */
+const marks = ['04-09','10-17','12-03'];
+const events = {
+ '2022-11-19':[['10:00',['東京駅','도쿄역']]],
+ '2022-11-11':[['19:00',['ミエル 受け取り','미엘 수령']]],
+ '2022-12-10':[['08:05',['羽田 → 大分','하네다 → 오이타']],['終日',['由布院','유후인'],1]],
+ '2022-12-11':[['終日',['由布院','유후인'],1],['18:40',['大分 → 羽田','오이타 → 하네다']]]
+};
+
+/* 메모 */
+const notes = [
+ {title:['世田谷 強盗致傷','세타가야 강도치상'], date:'2022-11-10', time:'16:40', body:[
+`11/7 22時頃　世田谷区三軒茶屋2丁目
+被害者　男性(67)　古書店店主
+頭部打撲　全治三週間
+
+目撃　自転車の男、黒っぽい上着
+→ 防犯カメラ 茶沢通り側 2台　確認済み
+→ 商店街側 未
+
+店内の帳簿が一冊ない
+金庫は手つかず。金目当てではない？
+
+霧嶋　聴取記録 2枚目の時系列
+→ 21:40 と 21:55 の間が空いている
+→ 裏取り指示済み`,
+`11/7 22시경　세타가야구 산겐자야 2초메
+피해자　남성(67)　고서점 주인
+머리 타박상　전치 3주
+
+목격　자전거 탄 남자, 거무스름한 겉옷
+→ 방범 카메라 차자와 거리 쪽 2대　확인 완료
+→ 상점가 쪽 미확인
+
+가게 장부가 한 권 없다
+금고는 손대지 않음. 돈이 목적이 아닌가?
+
+키리시마　청취 기록 두 번째 장 시간순
+→ 21:40과 21:55 사이가 비어 있다
+→ 뒷받침 지시 완료`]},
+ {title:['モズ','모즈'], date:'2020-11-20', time:'03:12', body:[
+`① 8/4　港区　蛇原朱巳(17)　女子高生
+② 9/2　港区　古鳥親一(44)　自営業
+③ 10/2　目黒区　虻谷花恵(28)　会社員
+④ 10/30　品川区　蟇内豪斗(33)　無職
+
+すべて夜間
+磔、心臓を拳銃で一発
+遺体に焼印（同一）
+
+被害者同士の接点　なし？
+→ 通院歴を洗い直す
+
+なぜ心臓だけ撃つ
+殺してから磔にしたのではない
+
+ほぼ一か月おき
+次は十一月の終わりか`,
+`① 8/4　미나토구　헤비하라 아케미(17)　여고생
+② 9/2　미나토구　코토리 신이치(44)　자영업
+③ 10/2　메구로구　아부타니 하나에(28)　회사원
+④ 10/30　시나가와구　가마우치 고우토(33)　무직
+
+전부 야간
+십자가에 매달고, 심장에 권총 한 발
+시신에 낙인 (동일)
+
+피해자끼리 접점　없음?
+→ 진료 이력 다시 조사
+
+왜 심장만 쏘는가
+죽인 뒤에 매단 게 아니다
+
+거의 한 달 간격
+다음은 11월 말인가`]},
+ {title:['ロックされたメモ','잠긴 메모'], date:'2020-12-03', time:'23:59', locked:true}
+];
+
+/* 파일 (스캔 문서) */
+const files = [
+ {id:'eticket', name:['eチケット控え_羽田-大分','e티켓 사본_하네다-오이타'], date:'2022-11-03', kind:'ticket'},
+ {id:'kenshin', name:['定期健康診断 結果通知','정기 건강검진 결과 통지'], date:'2022-06-24', kind:'kenshin'},
+ {id:'ryoushu', name:['領収書_東雲大学附属病院','영수증_시노노메 대학 부속 병원'], date:'2020-12-14', kind:'receipt'},
+ {id:'taiin', name:['退院療養計画書','퇴원 요양 계획서'], date:'2020-12-14', kind:'discharge'}
+];
+
+/* 브라우저 */
+const web = {
+ history:[
+  {id:'miel', when:'2022-11-10', time:'21:20', title:['パティスリー・ミエル｜駅前本店','파티스리 미엘｜역 앞 본점'], url:'miel-patisserie.jp', ic:['M','#d9a066']},
+  {id:'tea', when:'2022-11-08', time:'00:41', title:['青翠窯｜白磁ティーポット・カップ揃','세이스이 가마｜백자 티포트·찻잔 세트'], url:'seisuigama.jp/shop', ic:['青','#3f6f8f']},
+  {id:'rail', when:'2022-11-07', time:'23:10', title:['新幹線 空席照会｜東京 → 京都','신칸센 빈자리 조회｜도쿄 → 교토'], url:'rail-yoyaku.jp', ic:['新','#1f5fbf']},
+  {id:'onsen', when:'2022-11-02', time:'23:41', title:['由布院 湯宿しずく｜ご予約内容の確認','유후인 유야도 시즈쿠｜예약 내용 확인'], url:'yuyado-shizuku.jp', ic:['湯','#2e4a3a']},
+  {id:'kujo1', when:'2022-10-31', time:'07:31', title:['九条酒造、伏見に新酒蔵　来春から仕込み開始','쿠죠 주조, 후시미에 새 양조장　내년 봄부터 담금 시작'], url:'kyoto-keizai.jp', ic:['京','#7a3b2e'], paper:['京都経済新聞','교토 경제 신문'], pdate:['2022年10月31日 6:00','2022년 10월 31일 6:00'], article:[
+   ['清酒製造の九条酒造（京都市伏見区）は30日、同区内に建設していた新しい酒蔵の竣工式を開いた。延べ床面積は約2,400平方メートルで、年間の製造能力は従来の約1.5倍になる。','청주 제조사 쿠죠 주조(교토시 후시미구)는 30일, 같은 구에 짓고 있던 새 양조장의 준공식을 열었다. 연면적은 약 2,400제곱미터로, 연간 제조 능력은 기존의 약 1.5배가 된다.'],
+   ['来年春から仕込みを始める。同社は近年、海外向けの出荷が伸びており、新蔵の稼働で輸出用の生産を増やす。','내년 봄부터 담금을 시작한다. 이 회사는 최근 해외 출하가 늘고 있어, 새 양조장 가동으로 수출용 생산을 늘릴 계획이다.']]},
+  {id:'kujo2', when:'2022-08-12', time:'22:48', title:['副大臣・政務官人事を決定　府内から九条明仁氏','부대신·정무관 인사 결정　부내에서 쿠죠 아키히토 씨'], url:'kyoto-keizai.jp/politics', ic:['京','#7a3b2e'], paper:['京都経済新聞','교토 경제 신문'], pdate:['2022年8月12日 18:20','2022년 8월 12일 18:20'], article:[
+   ['政府は12日の閣議で、副大臣と政務官の人事を決定した。京都府関係では、衆院議員の九条明仁氏（当選3回）が国土交通政務官に起用された。','정부는 12일 각의에서 부대신과 정무관 인사를 결정했다. 교토부 관계로는 중의원 의원 쿠죠 아키히토 씨(당선 3회)가 국토교통 정무관에 기용되었다.'],
+   ['九条氏は「地域の声を国政に届けたい」と話した。','쿠죠 씨는 "지역의 목소리를 국정에 전하고 싶다"고 말했다.']]},
+  {id:'news', when:'2021-10-18', time:'07:12', title:['都立病院の精神科医を逮捕　入院患者らに自殺教唆の疑い','도립병원 정신과 의사 체포　입원 환자 등에 자살 교사 혐의'], url:'toto-shimbun.jp', ic:['東','#1d3c6a']}
+ ],
+ searches:[
+  ['ちいかわ 何の動物','치이카와 무슨 동물'],
+  ['ハチワレ 猫なのか','하치와레 고양이인가'],
+  ['うさぎ ちいかわ なぜ叫ぶ','우사기 치이카와 왜 소리 지름'],
+  ['ちいかわ 整理券 何時から並ぶ','치이카와 정리권 몇 시부터 줄 서나'],
+  ['有名 茶器 ブランド','유명 다기 브랜드'],
+  ['ハーブティー ティーポット 贈り物','허브티 티포트 선물'],
+  ['有田焼 ティーポット 白磁','아리타야키 티포트 백자'],
+  ['新幹線 年末 京都 指定席','신칸센 연말 교토 지정석'],
+  ['由布院 離れ 露天風呂付き','유후인 별채 노천탕 딸린'],
+  ['羽田 大分 12月10日','하네다 오이타 12월 10일'],
+  ['離婚届 証人 誰でもいい','이혼 신고서 증인 아무나 돼?'],
+  ['ミエル ケーキ ウイスキー','미엘 케이크 위스키']
+ ]
+};
+
+/* 동영상 */
+const videos = [
+ {title:['【未解決】連続殺人鬼「モズ」とは何だったのか　徹底解説','[미해결] 연쇄살인마 \'모즈\'는 무엇이었나　철저 해설'], ch:['犯罪アーカイブ','범죄 아카이브'], views:['182万回','182만 회'], ago:['1年前','1년 전'], dur:'42:18', th:['モズ','#2a0d0d','#c43a2c']},
+ {title:['モズ事件　被害者に共通点はあったのか【考察】','모즈 사건　피해자들에게 공통점은 있었나 [고찰]'], ch:['深夜の事件簿','심야의 사건부'], views:['64万回','64만 회'], ago:['1年前','1년 전'], dur:'28:51', th:['共通点','#151a24','#7b8db3']},
+ {title:['【ニュース】港区で女子高生が死亡　警視庁が捜査','[뉴스] 미나토구에서 여고생 사망　경시청 수사'], ch:['TNNニュース','TNN 뉴스'], views:['31万回','31만 회'], ago:['2年前','2년 전'], dur:'2:04', th:['速報','#0d2340','#e8e8e8']},
+ {title:['2020年冬、突然途絶えたモズ事件　その後','2020년 겨울, 갑자기 끊긴 모즈 사건　그 후'], ch:['犯罪アーカイブ','범죄 아카이브'], views:['95万回','95만 회'], ago:['11か月前','11개월 전'], dur:'35:40', th:['途絶','#1e1e1e','#c43a2c']},
+ {title:['精神科医はなぜ患者を死へ誘ったのか　阿利布病院事件','정신과 의사는 왜 환자를 죽음으로 이끌었나　아리부 병원 사건'], ch:['深夜の事件簿','심야의 사건부'], views:['210万回','210만 회'], ago:['1年前','1년 전'], dur:'51:02', th:['病院','#1b1426','#b493d6']},
+ {title:['【都市伝説】見ると死にたくなる映像は実在するのか','[도시전설] 보면 죽고 싶어지는 영상은 실재하는가'], ch:['ドキュメント東京','다큐멘트 도쿄'], views:['78万回','78만 회'], ago:['1年前','1년 전'], dur:'24:33', th:['噂','#10201c','#7fc4a8']},
+ {title:['【速報】都立病院の精神科医を逮捕　自殺教唆の疑い','[속보] 도립병원 정신과 의사 체포　자살 교사 혐의'], ch:['TNNニュース','TNN 뉴스'], views:['120万回','120만 회'], ago:['1年前','1년 전'], dur:'3:12', th:['逮捕','#0d2340','#f2c94c']},
+ {title:['逮捕された精神科医　元患者が語る素顔','체포된 정신과 의사　전 환자가 말하는 맨얼굴'], ch:['ドキュメント東京','다큐멘트 도쿄'], views:['43万回','43만 회'], ago:['10か月前','10개월 전'], dur:'31:17', th:['証言','#24180f','#d9a066']},
+ {title:['23区連続刺殺事件　犯人死亡で幕引きか','23구 연쇄 찌름 살인 사건　범인 사망으로 막 내리나'], ch:['TNNニュース','TNN 뉴스'], views:['18万回','18만 회'], ago:['3年前','3년 전'], dur:'4:40', th:['刺殺','#2a2a2a','#e8e8e8']},
+ {title:['神保町の古書店を一日かけて巡る','진보초 고서점을 하루 종일 돌아보다'], ch:['本の虫','책벌레'], views:['22万回','22만 회'], ago:['5か月前','5개월 전'], dur:'18:44', th:['古書','#2b2014','#e0c48a']},
+ {title:['ジャパニーズウイスキー　熟成年数で何が変わるのか','재패니즈 위스키　숙성 연수로 무엇이 달라지나'], ch:['酒場ノート','술집 노트'], views:['37万回','37만 회'], ago:['8か月前','8개월 전'], dur:'16:20', th:['12y','#2a1a08','#fccb4f']},
+ {title:['由布院　離れの宿で過ごす冬の一泊','유후인　별채 숙소에서 보내는 겨울 1박'], ch:['旅と湯','여행과 온천'], views:['15万回','15만 회'], ago:['1年前','1년 전'], dur:'12:05', th:['湯','#1f2e28','#e8dcc0']}
+];
+const watched = [0,1,4,6,8,9,10,11];
+
+/* 메일 */
+const mails = [
+ {from:['捜査一課 庶務','수사 1과 서무'], date:'2022-11-10', time:'17:02', subj:['【連絡】11/14 係長会議 会場変更','[연락] 11/14 계장 회의 장소 변경'],
+  body:['各位\n\n11月14日(月)10時からの係長会議は、6階第3会議室から4階第1会議室に変更となります。\n資料は前日までに共有フォルダへ格納してください。','각위\n\n11월 14일(월) 10시 계장 회의는 6층 제3회의실에서 4층 제1회의실로 변경됩니다.\n자료는 전날까지 공유 폴더에 올려 주십시오.']},
+ {from:['鑑識課 早川','감식과 하야카와'], date:'2022-11-08', time:'16:55', subj:['三軒茶屋の件　足跡鑑定結果','산겐자야 건　족적 감정 결과'],
+  body:['九条警部\n\nお電話でお伝えした件、書面で送ります。\n店舗裏口の足跡は26.5cm、量販店のスニーカーと一致。\n詳細は添付をご確認ください。\n\n早川','쿠죠 경부님\n\n전화로 말씀드린 건, 서면으로 보내드립니다.\n가게 뒷문 족적은 26.5cm, 양판점 운동화와 일치.\n자세한 내용은 첨부를 확인해 주십시오.\n\n하야카와']},
+ {from:['警視庁 人事第二課','경시청 인사 제2과'], date:'2022-11-04', time:'11:20', subj:['年末調整書類の提出について','연말 정산 서류 제출 안내'],
+  body:['所属職員各位\n\n年末調整に必要な書類（扶養控除等申告書、保険料控除申告書）を11月25日までに提出してください。','소속 직원 각위\n\n연말 정산에 필요한 서류(부양 공제 등 신고서, 보험료 공제 신고서)를 11월 25일까지 제출해 주십시오.']},
+ {from:['白金台テラスレジデンス 管理組合','시로카네다이 테라스 레지던스 관리조합'], date:'2022-11-01', time:'08:30', subj:['【お知らせ】機械式駐車場 点検のお願い','[안내] 기계식 주차장 점검 협조 요청'],
+  body:['居住者各位\n\n11月16日(水)9時〜15時、機械式駐車場の定期点検を実施します。\n当日は入出庫ができませんので、お車は前日までに移動をお願いいたします。','거주자 각위\n\n11월 16일(수) 9시~15시, 기계식 주차장 정기 점검을 실시합니다.\n당일은 입출고가 불가하오니 차량은 전날까지 이동 부탁드립니다.']},
+ {from:['日本航空','일본항공'], date:'2022-11-03', time:'00:12', subj:['【ご予約確認】12月10日 羽田 → 大分','[예약 확인] 12월 10일 하네다 → 오이타'],
+  body:['九条 真尋 様\n\nご予約ありがとうございます。\n\n往路　12月10日(土)　JL663　羽田 08:05 → 大分 09:50\n復路　12月11日(日)　JL670　大分 18:40 → 羽田 20:15\n\nご搭乗者　KUJO MAHIRO 様 / KUSAKI MOMOE 様\n座席　往復とも 8A・8B','쿠죠 마히로 님\n\n예약해 주셔서 감사합니다.\n\n가는 편　12월 10일(토)　JL663　하네다 08:05 → 오이타 09:50\n오는 편　12월 11일(일)　JL670　오이타 18:40 → 하네다 20:15\n\n탑승객　KUJO MAHIRO 님 / KUSAKI MOMOE 님\n좌석　왕복 모두 8A·8B']},
+ {from:['由布院 湯宿しずく','유후인 유야도 시즈쿠'], date:'2022-11-02', time:'23:44', subj:['【予約確定】12月10日(土) ご宿泊','[예약 확정] 12월 10일(토) 숙박'],
+  body:['九条 真尋 様\n\nご予約が確定いたしました。\n\nご宿泊日：2022年12月10日(土)〜11日(日)　1泊\nお部屋：離れ 露天風呂付き和室\n人数：大人2名\nお食事：夕・朝食付き\n\n大分空港より送迎バスがございます。','쿠죠 마히로 님\n\n예약이 확정되었습니다.\n\n숙박일: 2022년 12월 10일(토)~11일(일)　1박\n객실: 별채 노천탕 딸린 다다미방\n인원: 성인 2명\n식사: 저녁·아침 포함\n\n오이타 공항에서 송영 버스가 있습니다.']},
+ {from:['警視庁 健康管理室','경시청 건강관리실'], date:'2022-11-01', time:'10:30', subj:['【再通知】精密検査の受診について','[재통지] 정밀검사 수진 안내'],
+  body:['九条警部\n\n6月の定期健康診断において「要精密検査（肝機能）」と判定されていますが、受診の報告がまだ提出されていません。\n\n11月末までに医療機関を受診し、結果を提出してください。','쿠죠 경부님\n\n6월 정기 건강검진에서 \'정밀검사 필요(간 기능)\' 판정을 받으셨으나, 아직 수진 보고가 제출되지 않았습니다.\n\n11월 말까지 의료기관에서 진료를 받고 결과를 제출해 주십시오.']},
+ {from:['京都経済ニュース','교토 경제 뉴스'], date:'2022-10-31', time:'07:00', subj:['今週の京都経済｜九条酒造、伏見に新酒蔵 ほか','이번 주 교토 경제｜쿠죠 주조, 후시미에 새 양조장 외'],
+  body:['■ 九条酒造、伏見に新酒蔵　来春から仕込み開始\n■ 九条銀行、中間決算　純利益8％増\n■ 京都市内のホテル稼働率、コロナ前の水準に近づく\n\n配信停止はこちら','■ 쿠죠 주조, 후시미에 새 양조장　내년 봄부터 담금 시작\n■ 쿠죠 은행, 중간 결산　순이익 8% 증가\n■ 교토 시내 호텔 가동률, 코로나 이전 수준에 근접\n\n수신 거부는 여기']},
+ {from:['ETC利用照会サービス','ETC 이용 조회 서비스'], date:'2022-11-05', time:'09:00', subj:['10月分 ご利用明細のお知らせ','10월분 이용 내역 안내'],
+  body:['ご登録カード：•••• 0918\n\n10月ご利用分\n首都高速　目黒 → 霞が関　19回\n首都高速　霞が関 → 目黒　17回\n首都高速　霞が関 → 新宿　1回\n\nご利用合計　¥25,900','등록 카드: •••• 0918\n\n10월 이용분\n수도고속도로　메구로 → 가스미가세키　19회\n수도고속도로　가스미가세키 → 메구로　17회\n수도고속도로　가스미가세키 → 신주쿠　1회\n\n이용 합계　¥25,900']},
+ {from:['白金台モータース','시로카네다이 모터스'], date:'2022-10-24', time:'10:00', subj:['車検満了のご案内（2023年1月）','차량 검사 만료 안내 (2023년 1월)'],
+  body:['九条 真尋 様\n\nお車の車検満了日が2023年1月20日となっております。\n年末は混み合いますので、お早めのご予約をおすすめいたします。\n\n代車のご用意も承ります。','쿠죠 마히로 님\n\n차량 검사 만료일이 2023년 1월 20일입니다.\n연말은 붐비므로 빠른 예약을 권해 드립니다.\n\n대차 준비도 가능합니다.']},
+ {from:['ふるさと納税ポータル','고향 납세 포털'], date:'2022-10-30', time:'12:00', subj:['年内の寄付はお早めに','연내 기부는 서둘러 주세요'],
+  body:['寄付金控除の対象となるのは12月31日までのお申し込み分です。人気の返礼品は品切れになる前にお早めに。','기부금 공제 대상은 12월 31일까지 신청분입니다. 인기 답례품은 품절되기 전에 서둘러 주세요.']},
+ {from:['古書 鶴文堂','고서 츠루분도'], date:'2022-10-28', time:'08:00', subj:['十一月古書目録のお知らせ','11월 고서 목록 안내'],
+  body:['いつもご利用ありがとうございます。\n\n十一月の目録を公開しました。今月は戦前の探偵小説の初版を多数入荷しております。\n\n神保町古書市にも出店いたします。','늘 이용해 주셔서 감사합니다.\n\n11월 목록을 공개했습니다. 이번 달은 전쟁 전 탐정소설 초판이 다수 입고되었습니다.\n\n진보초 고서 시장에도 출점합니다.']}
+];
+
+/* 지도 */
+const places = [
+ {id:'home', name:['自宅','집'], addr:['東京都港区白金台4丁目　白金台テラスレジデンス 1102','도쿄도 미나토구 시로카네다이 4초메　시로카네다이 테라스 레지던스 1102'], x:110, y:235, c:'#8e8e93'},
+ {id:'mpd', name:['警視庁','경시청'], addr:['東京都千代田区霞が関2丁目1-1','도쿄도 지요다구 가스미가세키 2초메 1-1'], x:215, y:120, c:'#0a84ff'},
+ {id:'miel', name:['パティスリー・ミエル','파티스리 미엘'], addr:['東京都港区白金台5丁目（駅前）','도쿄도 미나토구 시로카네다이 5초메 (역 앞)'], x:150, y:210, c:'#ff9f0a'},
+ {id:'jikka', name:['実家','본가'], addr:['京都府京都市左京区下鴨松ノ木町','교토부 교토시 사쿄구 시모가모 마쓰노키초'], far:['現在地から約370km','현재 위치에서 약 370km'], c:'#ff375f'},
+ {id:'kofu', name:['甲府','고후'], addr:['山梨県甲府市','야마나시현 고후시'], far:['現在地から約130km','현재 위치에서 약 130km'], c:'#30d158'}
+];
+
+/* 음악: 사용 기록 없음, 추천만 */
+const music = {
+ recs:[
+  {n:['はじめてのジャズ','처음 듣는 재즈'], c:['#1f3550','#6a8fb8']},
+  {n:['雨の日に','비 오는 날에'], c:['#2b2f36','#9fb1c9']},
+  {n:['作業用ピアノ','작업용 피아노'], c:['#2b2b2b','#8a8a8a']},
+  {n:['昭和の歌謡曲','쇼와 가요'], c:['#3a2412','#e0a060']},
+  {n:['夜のドライブ','밤 드라이브'], c:['#1b1426','#b493d6']},
+  {n:['クラシック入門','클래식 입문'], c:['#3a2a3a','#c9a0c9']}
+ ]
+};
+
+/* 지갑 */
+const wallet = {
+ cards:[
+  {n:['クレジットカード','신용카드'], sub:'•••• 4417', c:['#1c2a44','#3b5a8a']},
+  {n:['交通系ICカード','교통 IC 카드'], sub:'¥2,340', c:['#2f8f5a','#5fc08a']},
+  {n:['ETCカード','ETC 카드'], sub:'•••• 0918', c:['#3a3a3c','#7a7a7e']}
+ ],
+ tx:[
+  ['2022-11-10','23:28',['からあげ とり福 白金台','가라아게 토리후쿠 시로카네다이'],'¥1,280','card'],
+  ['2022-11-10','12:31',['警視庁 職員食堂','경시청 직원 식당'],'¥520','ic'],
+  ['2022-11-09','17:24',['紅茶専門店 リーフ白金','홍차 전문점 리프 시로카네'],'¥2,160','card'],
+  ['2022-11-09','16:58',['クリーニング白金','클리닝 시로카네'],'¥3,850','card'],
+  ['2022-11-08','00:44',['青翠窯 オンラインショップ','세이스이 가마 온라인숍'],'¥25,300','card'],
+  ['2022-11-07','08:10',['白金台サービスステーション','시로카네다이 주유소'],'¥6,820','card'],
+  ['2022-11-05','15:12',['古書 鶴文堂','고서 츠루분도'],'¥18,700','card'],
+  ['2022-11-04','23:50',['BAR 霞','바 카스미'],'¥7,400','card'],
+  ['2022-11-04','13:05',['自動販売機','자동판매기'],'¥160','ic'],
+  ['2022-11-03','00:15',['日本航空','일본항공'],'¥98,640','card'],
+  ['2022-11-02','23:44',['湯宿しずく（予約金）','유야도 시즈쿠 (예약금)'],'¥20,000','card']
+ ]
+};
+
+/* 건강 */
+const health = {
+ sleep:[['11/4',3.9],['11/5',5.1],['11/6',6.8],['11/7',3.4],['11/8',4.6],['11/9',4.9],['11/10',4.2]],
+ steps:[['11/4',5120],['11/5',2210],['11/6',1840],['11/7',6930],['11/8',4410],['11/9',3980],['11/10',3412]]
+};
+
+/* 스크린 타임 */
+const screen = {
+ days:[['日',22],['月',41],['火',37],['水',44],['木',39],['金',35],['土',28]],
+ apps:[['msg',15],['phone',10],['browser',4],['mail',3],['maps',2],['video',1]],
+ notif:[['草樹 百恵',19],['捜査一課 九条班',9],['霧嶋 凛道',4]]
+};
+
+</script>
+<script>
+/* ================= 공통 ================= */
+let lang = 'ja';
+try { const s = localStorage.getItem('mahiro-lang'); if (s === 'ko' || s === 'ja') lang = s; } catch (e) {}
+const L = a => Array.isArray(a) ? a[lang === 'ko' ? 1 : 0] : a;
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const WD = {ja:'日月火水木金土', ko:'일월화수목금토'};
+const dObj = iso => { const [y,m,d] = iso.split('-').map(Number); return new Date(y, m-1, d); };
+function longDate(iso){
+  const [y,m,d] = iso.split('-').map(Number), w = WD[lang][dObj(iso).getDay()];
+  return lang === 'ko' ? `${y}년 ${m}월 ${d}일 (${w})` : `${y}年${m}月${d}日(${w})`;
+}
+function dayLabel(iso){
+  if (iso === TODAY) return L(['今日','오늘']);
+  if (iso === '2022-11-09') return L(['昨日','어제']);
+  return longDate(iso);
+}
+function shortDate(iso, time){
+  if (iso === TODAY) return time;
+  if (iso === '2022-11-09') return L(['昨日','어제']);
+  const diff = (dObj(TODAY) - dObj(iso)) / 864e5;
+  if (diff < 7) return (lang === 'ko' ? WD.ko[dObj(iso).getDay()] + '요일' : WD.ja[dObj(iso).getDay()] + '曜日');
+  const [y,m,d] = iso.split('-');
+  return `${y}/${m}/${d}`;
+}
+let toastT;
+function toast(a){ const t = $('#toast'); t.textContent = L(a); t.style.opacity = 1; clearTimeout(toastT); toastT = setTimeout(() => t.style.opacity = 0, 1700); }
+
+const chev = `<svg class="chev" width="8" height="13" viewBox="0 0 8 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 1.5l5 5-5 5"/></svg>`;
+const backChev = `<svg width="12" height="20" viewBox="0 0 12 20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2L2 10l8 8"/></svg>`;
+const statusBar = time => `<span>${time ? '23:48' : ''}</span><span class="r"><svg width="18" height="12" viewBox="0 0 18 12" fill="#fff"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="16" height="12" viewBox="0 0 16 12" fill="#fff"><path d="M8 2.2c2.4 0 4.6.9 6.2 2.5l1.3-1.3C13.5 1.4 10.9.3 8 .3S2.5 1.4.5 3.4l1.3 1.3C3.4 3.1 5.6 2.2 8 2.2zM8 6c1.3 0 2.5.5 3.4 1.4l1.3-1.3C11.5 4.9 9.8 4.1 8 4.1s-3.5.8-4.7 2l1.3 1.3C5.5 6.5 6.7 6 8 6zm0 3.6c-.5 0-1 .2-1.3.5L8 11.5l1.3-1.4c-.3-.3-.8-.5-1.3-.5z"/></svg><span class="bat"><i></i></span></span>`;
+
+/* ================= 아이콘 (직접 그린 것) ================= */
+function icon(k){
+  const g = (id, a, b) => `<defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient></defs>`;
+  const n = ++icon.n; const S = (inner) => `<svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">${inner.replace(/(id="|url\(#)(g[a-z])/g, '$1$2_'+n)}</svg>`;
+  switch(k){
+    case 'phone': return S(g('gp','#6ee66e','#1fb83f')+`<rect width="60" height="60" fill="url(#gp)"/><path d="M21.5 16c1.2-.4 2.4.1 3 1.2l2.6 4.8c.6 1 .3 2.3-.6 3.1l-2.1 1.8c1.4 3.4 4 6.3 7.3 8l1.9-2c.8-.9 2.1-1.1 3.1-.5l4.7 2.8c1.1.6 1.5 1.9 1.1 3.1l-.9 2.4c-.8 2-2.9 3.2-5 2.8-9.9-1.9-16.9-9.6-18.4-19.3-.3-2 .9-4 2.8-4.8z" fill="#fff"/>`);
+    case 'msg': return S(g('gm','#71e574','#20b641')+`<rect width="60" height="60" fill="url(#gm)"/><path d="M30 14c-9.4 0-17 6.1-17 13.7 0 4.3 2.4 8.1 6.2 10.6-.4 2.2-1.5 4.3-3.2 5.9 3.4.1 6.5-1 8.8-3 1.7.4 3.4.6 5.2.6 9.4 0 17-6.1 17-13.7S39.4 14 30 14z" fill="#fff"/>`);
+    case 'browser': return S(g('gb','#5fb4ff','#1d6ff0')+`<rect width="60" height="60" fill="url(#gb)"/><circle cx="30" cy="30" r="19" fill="#fff"/><circle cx="30" cy="30" r="16.5" fill="none" stroke="#c9dbf5" stroke-width="1"/><path d="M38 22l-5.5 10.5L22 38l5.5-10.5z" fill="#ff3b30"/><path d="M22 38l5.5-10.5 5 5z" fill="#d1d1d6"/>`);
+    case 'music': return S(g('gu','#ff6b7f','#f22a4d')+`<rect width="60" height="60" fill="url(#gu)"/><path d="M25 18.5l15-3.2v19.4a4.6 4.6 0 1 1-2.6-4.1V21.5l-9.8 2.1v13.7a4.6 4.6 0 1 1-2.6-4.1z" fill="#fff"/>`);
+    case 'calendar': return S(`<rect width="60" height="60" fill="#fff"/><text x="30" y="19" text-anchor="middle" font-size="10" font-weight="600" fill="#ff3b30" font-family="-apple-system,Hiragino Sans,Noto Sans JP,sans-serif">${lang==='ko'?'목요일':'木曜日'}</text><text x="30" y="47" text-anchor="middle" font-size="29" font-weight="300" fill="#111" font-family="-apple-system,Helvetica,sans-serif">10</text>`);
+    case 'photos': return S(`<rect width="60" height="60" fill="#fbfbfb"/><rect x="11" y="15" width="38" height="30" rx="5" fill="#ffe3a3"/><circle cx="39" cy="24" r="4.5" fill="#ff9f0a"/><path d="M11 40l10-11 8 8 6-6 14 13v1a5 5 0 0 1-5 5H16a5 5 0 0 1-5-5z" fill="#34c759"/><path d="M11 42l10-9 9 9 5-4 14 9v-2l-14-11-5 4-9-9-10 10z" fill="#248a3d" opacity=".5"/>`);
+    case 'camera': return S(g('gc','#a6a6ab','#636366')+`<rect width="60" height="60" fill="url(#gc)"/><rect x="12" y="20" width="36" height="25" rx="5" fill="#2c2c2e"/><path d="M23 20l2.5-4h9l2.5 4z" fill="#2c2c2e"/><circle cx="30" cy="32.5" r="8.5" fill="#1c1c1e" stroke="#8e8e93" stroke-width="2"/><circle cx="30" cy="32.5" r="4" fill="#3a4c6b"/><circle cx="42" cy="25" r="1.6" fill="#ffd60a"/>`);
+    case 'mail': return S(g('gl','#4fb3ff','#1a75f0')+`<rect width="60" height="60" fill="url(#gl)"/><rect x="12" y="18" width="36" height="25" rx="3.5" fill="#fff"/><path d="M12.8 19.5L30 32l17.2-12.5" fill="none" stroke="#b9d6f7" stroke-width="2.2"/>`);
+    case 'clock': return S(`<rect width="60" height="60" fill="#111"/><circle cx="30" cy="30" r="21" fill="#fff"/>${[...Array(12)].map((_,i)=>{const a=i*30*Math.PI/180;return `<line x1="${30+Math.sin(a)*17}" y1="${30-Math.cos(a)*17}" x2="${30+Math.sin(a)*19}" y2="${30-Math.cos(a)*19}" stroke="#111" stroke-width="1.4"/>`}).join('')}<line x1="30" y1="30" x2="29" y2="17" stroke="#111" stroke-width="2.4" stroke-linecap="round"/><line x1="30" y1="30" x2="21" y2="23" stroke="#111" stroke-width="2.4" stroke-linecap="round"/><line x1="30" y1="34" x2="33" y2="13" stroke="#ff9f0a" stroke-width="1"/><circle cx="30" cy="30" r="1.8" fill="#ff9f0a"/>`);
+    case 'weather': return S(g('gw','#3d8ee8','#83c3f6')+`<rect width="60" height="60" fill="url(#gw)"/><circle cx="24" cy="24" r="9" fill="#ffd60a"/><path d="M22 44a7 7 0 0 1 .8-13.9A9.5 9.5 0 0 1 41 32.4 6 6 0 0 1 41 44z" fill="#fff"/>`);
+    case 'maps': return S(`<rect width="60" height="60" fill="#e9f1e2"/><path d="M0 40L60 18v8L0 48z" fill="#fff"/><path d="M34 0h7l-16 60h-7z" fill="#ffd66b"/><rect x="0" y="0" width="22" height="20" fill="#b9dca2"/><path d="M42 44h18v16H42z" fill="#a9d4f5"/><path d="M40 13c-4.4 0-8 3.5-8 7.9 0 6 8 13.1 8 13.1s8-7.1 8-13.1c0-4.4-3.6-7.9-8-7.9z" fill="#ff3b30"/><circle cx="40" cy="21" r="3" fill="#fff"/>`);
+    case 'notes': return S(`<rect width="60" height="60" fill="#fff"/><rect width="60" height="15" fill="#ffd34d"/><g stroke="#dcdce0" stroke-width="1.2"><line x1="8" y1="25" x2="52" y2="25"/><line x1="8" y1="34" x2="52" y2="34"/><line x1="8" y1="43" x2="52" y2="43"/><line x1="8" y1="52" x2="52" y2="52"/></g>`);
+    case 'video': return S(g('gv','#ff7a3d','#e6332a')+`<rect width="60" height="60" fill="url(#gv)"/><rect x="12" y="17" width="36" height="26" rx="4" fill="none" stroke="#fff" stroke-width="2.6"/><path d="M26.5 24.5v11l9.5-5.5z" fill="#fff"/><g fill="#fff"><rect x="15" y="12" width="4" height="3" rx="1"/><rect x="28" y="12" width="4" height="3" rx="1"/><rect x="41" y="12" width="4" height="3" rx="1"/><rect x="15" y="45" width="4" height="3" rx="1"/><rect x="28" y="45" width="4" height="3" rx="1"/><rect x="41" y="45" width="4" height="3" rx="1"/></g>`);
+    case 'files': return S(g('gf','#7cc4ff','#2f8de8')+`<rect width="60" height="60" fill="#fff"/><path d="M10 19a3 3 0 0 1 3-3h10l4 4h20a3 3 0 0 1 3 3v19a3 3 0 0 1-3 3H13a3 3 0 0 1-3-3z" fill="url(#gf)"/><path d="M10 25h40v17a3 3 0 0 1-3 3H13a3 3 0 0 1-3-3z" fill="#5aaef5"/>`);
+    case 'wallet': return S(`<rect width="60" height="60" fill="#111"/><rect x="9" y="12" width="42" height="26" rx="4" fill="#3b82f6"/><rect x="9" y="19" width="42" height="26" rx="4" fill="#f5b400"/><rect x="9" y="26" width="42" height="26" rx="4" fill="#34c759"/><rect x="9" y="33" width="42" height="18" rx="4" fill="#ff6b3d"/>`);
+    case 'health': return S(`<rect width="60" height="60" fill="#fff"/><path d="M30 46s-15-9-15-20a8 8 0 0 1 15-4 8 8 0 0 1 15 4c0 11-15 20-15 20z" fill="#ff2d55"/>`);
+    case 'settings': return S(g('gs','#a1a1a6','#6e6e73')+`<rect width="60" height="60" fill="url(#gs)"/><g transform="translate(30 30)"><circle r="16" fill="#3a3a3c"/>${[...Array(12)].map((_,i)=>`<rect x="-2.5" y="-20" width="5" height="7" rx="1" fill="#3a3a3c" transform="rotate(${i*30})"/>`).join('')}<circle r="11" fill="#8e8e93"/><circle r="6.5" fill="#3a3a3c"/><circle r="3.5" fill="#c7c7cc"/></g>`);
+  }
+}
+icon.n = 0;
+const APPS = {
+  phone:['電話','전화'], msg:['メッセージ','메시지'], browser:['ブラウザ','브라우저'], music:['ミュージック','음악'],
+  calendar:['カレンダー','캘린더'], photos:['写真','사진'], camera:['カメラ','카메라'], mail:['メール','메일'],
+  clock:['時計','시계'], weather:['天気','날씨'], maps:['マップ','지도'], notes:['メモ','메모'], files:['ファイル','파일'], wallet:['ウォレット','지갑'], health:['ヘルスケア','건강'], video:['Tube','Tube'], settings:['設定','설정']
+};
+const BADGE = {phone:1, mail:1};
+
+/* ================= 화면 전환 ================= */
+function show(id){ ['lock','pin','home','appScreen'].forEach(s => $('#'+s).hidden = s !== id); }
+let stack = [];
+function openApp(fn){ stack = [fn]; show('appScreen'); fn(); }
+function push(fn){ stack.push(fn); fn(); }
+function back(){ stack.pop(); if (stack.length) stack[stack.length-1](); else show('home'); }
+function rerender(){ renderStatic(); if (!$('#appScreen').hidden && stack.length) stack[stack.length-1](); }
+$('#homeHit').onclick = () => { if (!$('#home').hidden || !$('#appScreen').hidden) { stack = []; show('home'); } };
+
+function nav(backLabel, title = '', right = ''){
+  return `<div class="nav">${backLabel !== null ? `<button class="bk" data-back>${backChev}<span>${esc(backLabel)}</span></button>` : ''}<div class="ttl">${title}</div>${right ? `<span class="rt">${right}</span>` : ''}</div>`;
+}
+function view(html){
+  const v = $('#view'); v.innerHTML = html;
+  v.querySelectorAll('[data-back]').forEach(b => b.onclick = back);
+  v.querySelectorAll('[data-toast]').forEach(b => b.onclick = () => toast(JSON.parse(b.dataset.toast)));
+  return v;
+}
+const T = a => esc(JSON.stringify(a));
+
+/* ================= 잠금 / 암호 / 홈 ================= */
+function renderStatic(){
+  document.body.classList.toggle('ko', lang === 'ko');
+  document.documentElement.lang = lang;
+  $('#appStatus').innerHTML = statusBar(true);
+  $('#foot').textContent = lang === 'ko' ? '' : '언어는 설정 › 일반 › 언어와 지역에서 바꿀 수 있습니다';
+  $('#lock').innerHTML = `<div class="status">${statusBar(false)}</div>
+  <button class="lock-body" id="toPin">
+    <svg width="16" height="20" viewBox="0 0 14 18" fill="none" stroke="#fff" stroke-width="1.8"><rect x="1" y="8" width="12" height="9" rx="2.2" fill="#fff"/><path d="M3.5 8V5.5a3.5 3.5 0 0 1 7 0V8"/></svg>
+    <div class="lock-date">${lang==='ko'?'11월 10일 목요일':'11月10日 木曜日'}</div>
+    <div class="lock-time">23:48</div>
+    <div class="notif"><span class="aic">${icon('msg')}</span><b>草樹 百恵</b><small>${L(['15分前','15분 전'])}</small><p>${esc(L(['やったー！！！気をつけて帰ってきてくださいね！','야호!!! 조심히 들어와요!']))}</p></div>
+    <div class="lock-row"><span><svg width="18" height="22" viewBox="0 0 18 22" fill="#fff"><path d="M4 0h10v4l-2 4v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V8L4 4z" opacity=".9"/></svg></span><span><svg width="22" height="18" viewBox="0 0 22 18" fill="#fff"><path d="M7 2l1.5-2h5L15 2h4a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H3a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3z"/><circle cx="11" cy="10" r="4" fill="#3a3530"/></svg></span></div>
+    <div class="lock-hint">${L(['タップしてロック解除','탭하여 잠금 해제'])}</div>
+  </button>`;
+  $('#toPin').onclick = () => { entry=''; show('pin'); renderPin(); };
+  renderPin();
+  renderHome();
+}
+const PIN = '0409'; let entry = '';
+function renderPin(){
+  const keys = [['1',''],['2','ABC'],['3','DEF'],['4','GHI'],['5','JKL'],['6','MNO'],['7','PQRS'],['8','TUV'],['9','WXYZ'],['',''],['0',''],['','']];
+  $('#pin').innerHTML = `<div class="status">${statusBar(false)}</div><div class="pin-wrap">
+    <div class="pin-title">${L(['パスコードを入力','암호 입력'])}</div>
+    <div class="dots" id="dots">${'<i></i>'.repeat(4)}</div>
+    <div class="keys">${keys.map(([n,l]) => n ? `<button class="key" data-k="${n}"><b>${n}</b>${l?`<small>${l}</small>`:''}</button>` : '<span></span>').join('')}</div>
+    <div class="pin-hint" id="pinHint"></div>
+    <div class="pin-foot"><button id="hintBtn">${L(['ヒント','힌트'])}</button><button id="pinCancel">${L(['キャンセル','취소'])}</button></div></div>`;
+  $$('#pin [data-k]').forEach(b => b.onclick = () => {
+    if (entry.length >= 4) return;
+    entry += b.dataset.k; dots();
+    if (entry.length === 4) setTimeout(() => {
+      if (entry === PIN) { entry=''; dots(); show('home'); }
+      else { const d = $('#dots'); d.classList.add('shake'); setTimeout(() => { d.classList.remove('shake'); entry=''; dots(); }, 460); }
+    }, 150);
+  });
+  $('#hintBtn').onclick = () => $('#pinHint').textContent = L(['ある人の誕生日（4桁）','어떤 사람의 생일 (4자리)']);
+  $('#pinCancel').onclick = () => { entry=''; show('lock'); };
+}
+function dots(){ $$('#dots i').forEach((d,i) => d.classList.toggle('on', i < entry.length)); }
+
+function appBtn(k){
+  return `<button class="app" data-app="${k}"><span class="icw"><span class="ic">${icon(k)}</span>${BADGE[k]?`<span class="badge">${BADGE[k]}</span>`:''}</span><span class="lb">${esc(L(APPS[k]))}</span></button>`;
+}
+function renderHome(){
+  $('#home').innerHTML = `<div class="status">${statusBar(true)}</div><div class="home-body">
+    <div class="widgets">
+      <button class="wdg wx" data-app="weather"><div><small>${L(['東京','도쿄'])}</small><div class="t">9°</div></div><div><svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M14 3a8 8 0 1 0 7 11.8A9 9 0 0 1 14 3z"/></svg><small>${L(['晴れ','맑음'])}</small><small>${L(['最高:14° 最低:6°','최고:14° 최저:6°'])}</small></div></button>
+      <button class="wdg cal" data-app="calendar"><div><div class="dw">${L(['木曜日','목요일'])}</div><div class="dn">10</div></div><div class="ev">${L(['明日','내일'])} 19:00<small>${L(['ミエル 受け取り','미엘 수령'])}</small></div></button>
+    </div>
+    <div class="grid">${['calendar','photos','camera','mail','clock','weather','maps','notes','files','wallet','health','video','settings'].map(appBtn).join('')}</div>
+    <div class="pager"><i class="on"></i><i></i></div>
+    <div class="dock">${['phone','browser','msg','music'].map(appBtn).join('')}</div>
+  </div>`;
+  $$('#home [data-app]').forEach(b => b.onclick = () => launch(b.dataset.app));
+}
+function launch(k){
+  const map = {msg:msgList, phone:()=>phoneApp('recent'), photos:photosApp, notes:notesApp, calendar:calendarApp, browser:browserApp,
+    video:()=>videoApp('home'), maps:mapsApp, files:filesApp, wallet:walletApp, health:healthApp, mail:mailApp, settings:settingsApp, clock:clockApp, weather:weatherApp, camera:cameraApp, music:musicApp};
+  openApp(map[k]);
+}
+
+/* ================= 메시지 ================= */
+const msgOf = m => Array.isArray(m) ? {d:m[0], t:m[1], me:m[2], ja:m[3], ko:m[4], s:m[5]} : m;
+const sname = id => people[id].name.split(' ')[0];
+function preview(m){ if (m.link) return L(['リンク','링크'])+': '+L(m.link.title); if (m.loc) return L(['位置情報','위치']); return lang==='ko'?m.ko:m.ja; }
+function avatar(id, cls=''){
+  const p = people[id];
+  if (p && p.group) return `<span class="av ${cls}" style="background:linear-gradient(180deg,#5a7fb8,#3a5a8a)"><svg viewBox="0 0 24 24" fill="#fff"><circle cx="8" cy="9" r="3.2"/><circle cx="16" cy="9" r="3.2"/><path d="M2 20c0-3.6 2.7-6 6-6s6 2.4 6 6zM10 20c0-3.6 2.7-6 6-6s6 2.4 6 6z"/></svg></span>`;
+  if (!p || p.unsaved) return `<span class="av ${cls}"><svg viewBox="0 0 24 24" fill="#fff"><circle cx="12" cy="8" r="4.5"/><path d="M3 21c0-4.5 4-7.5 9-7.5s9 3 9 7.5z"/></svg></span>`;
+  return `<span class="av ${cls}">${esc(p.name.replace(/ .*/,'').slice(0,1))}</span>`;
+}
+function msgList(){
+  const pins = pinnedThreads.map(id => `<button data-th="${id}">${avatar(id)}<span>${esc(people[id].name)}</span></button>`).join('');
+  const rows = threadOrder.filter(id => !pinnedThreads.includes(id)).map(id => {
+    const m = msgOf(threads[id].at(-1)), p = people[id];
+    return `<button class="trow" data-th="${id}">${avatar(id)}<span class="tx"><span class="tp"><span class="nm">${esc(p.name)}</span><span class="tm">${esc(shortDate(m.d,m.t))} ${chev}</span></span><span class="pv">${m.s?esc(sname(m.s))+': ':''}${esc(preview(m))}</span></span></button>`;
+  }).join('');
+  view(`${nav(null,'',L(['編集','편집']))}<h1 class="large">${L(APPS.msg)}</h1><div class="search">⌕ ${L(['検索','검색'])}</div><div class="scroll"><div class="pinned">${pins}</div>${rows}</div>`);
+  $$('#view [data-th]').forEach(b => b.onclick = () => push(() => thread(b.dataset.th)));
+}
+function thread(id){
+  const p = people[id], list = threads[id].map(msgOf);
+  let html = '', prev = null;
+  const lastIdx = list.length - 1;
+  list.forEach((m,i) => {
+    const newDay = !prev || prev.d !== m.d;
+    const gapH = prev && !newDay && (parseInt(m.t) - parseInt(prev.t) >= 2);
+    if (newDay) html += `<div class="cday"><b>${esc(dayLabel(m.d))}</b> ${m.t}</div>`;
+    else if (gapH) html += `<div class="cday">${m.t}</div>`;
+    const gap = prev && !newDay && prev.me !== m.me ? ' gap' : '';
+    if (m.link) html += `<div class="bub link${m.me?' me':''}${gap}"><div class="lk-img"${m.link.img==='pop'?' style="background:linear-gradient(135deg,#fde2ea,#cfe8ff)"':''}>${m.link.img==='pop'?'<span style="font:800 22px/1.1 Helvetica,Arial,sans-serif;color:#e0567a;letter-spacing:.04em;text-align:center">POP UP<br><span style="font-size:13px;color:#5a7fb8">STORE 2022</span></span>':'<svg width="80" height="60" viewBox="0 0 80 60"><path d="M12 44h56l-6 10H18z" fill="#8a5a2b"/><path d="M18 26h44v18H18z" fill="#4a2a14"/><path d="M18 26h44l-4-8H22z" fill="#fff4dc"/><circle cx="40" cy="15" r="4" fill="#c43a2c"/></svg>'}</div><div class="lk-tx">${esc(L(m.link.title))}<small>${m.link.site}</small></div></div>`;
+    else if (m.loc) html += `<div class="bub loc${m.me?' me':''}${gap}"><svg class="map-img" viewBox="0 0 240 120" preserveAspectRatio="xMidYMid slice"><rect width="240" height="120" fill="#2a2f35"/><path d="M0 70h240M0 30h240M60 0v120M170 0v120" stroke="#3d444c" stroke-width="8"/><path d="M0 95L240 55" stroke="#5a4f2c" stroke-width="6"/><circle cx="120" cy="60" r="9" fill="#ff3b30" stroke="#fff" stroke-width="3"/></svg><div class="lk-tx">${esc(L(m.loc.name))}<small>${esc(L(m.loc.addr))}</small></div></div>`;
+    else { if (m.s && !m.me && (!prev || prev.s !== m.s || newDay)) html += `<div style="font-size:11px;color:var(--sec);margin:8px 0 0 12px">${esc(sname(m.s))}</div>`;
+      html += `<div class="bub${m.me?' me':''}${gap}">${esc(lang==='ko'?m.ko:m.ja)}</div>`; }
+    if (i === lastIdx && m.me) html += `<div class="read">${L(['既読','읽음'])} ${m.d===TODAY?m.t:esc(m.d.slice(5).replace('-','/'))}</div>`;
+    prev = m;
+  });
+  const v = view(`${nav(L(APPS.msg))}<div class="chat-head">${avatar(id,'sm')}<span>${esc(p.name)} ›</span></div>
+    <div class="scroll" id="chatScroll"><div class="chat">${html}</div></div>
+    <div class="compose"><span class="plus">+</span><span class="in" data-toast='${T(['送信できません','보낼 수 없습니다'])}'>${L(['メッセージ','메시지'])}</span></div>`);
+  if (!p.unsaved) v.querySelector('.chat-head').onclick = () => push(() => contact(id));
+  const s = $('#chatScroll'); s.scrollTop = s.scrollHeight;
+}
+
+/* ================= 전화 ================= */
+const kindLabel = c => c[3]==='out' ? L(['発信','발신']) : c[3]==='in' ? L(['携帯','휴대전화']) : L(['不在着信','부재중 전화']);
+function phoneTabs(cur){
+  const tabs = [['recent',['履歴','최근 기록'],'<path d="M12 3a9 9 0 1 0 9 9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3.5 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>'],
+    ['contacts',['連絡先','연락처'],'<circle cx="12" cy="8" r="4" fill="currentColor"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5z" fill="currentColor"/>'],
+    ['keypad',['キーパッド','키패드'],[0,1,2].map(r=>[0,1,2].map(c=>`<circle cx="${6+c*6}" cy="${5+r*6}" r="2.2" fill="currentColor"/>`).join('')).join('')+'<circle cx="12" cy="23" r="2.2" fill="currentColor"/>']];
+  return `<div class="tabs">${tabs.map(([k,l,s]) => `<button class="${k===cur?'on':''}" data-ptab="${k}"><svg viewBox="0 0 24 26">${s}</svg>${L(l)}</button>`).join('')}</div>`;
+}
+function bindPhoneTabs(){ $$('#view [data-ptab]').forEach(b => b.onclick = () => { stack = [() => phoneApp(b.dataset.ptab)]; stack[0](); }); }
+let recentFilter = 'all';
+function phoneApp(tab){
+  let body = '';
+  if (tab === 'recent'){
+    const list = calls.filter(c => recentFilter === 'all' || c[3] === 'miss');
+    body = `${nav(null,`<div class="seg" style="margin:0;width:180px"><button class="${recentFilter==='all'?'on':''}" data-rf="all">${L(['すべて','모두'])}</button><button class="${recentFilter==='miss'?'on':''}" data-rf="miss">${L(['不在着信','부재중'])}</button></div>`,L(['編集','편집']))}
+      <h1 class="large">${L(['履歴','최근 기록'])}</h1><div class="scroll">${list.map(c => {
+        const p = people[c[2]];
+        return `<button class="crow" data-ct="${c[2]}"><span class="tx"><span style="flex:1;min-width:0"><span class="nm${c[3]==='miss'?' miss':''}">${esc(p.name)}${c[5]?` (${c[5]})`:''}</span><br><span class="kd">${kindLabel(c)}</span></span><span class="tm">${esc(shortDate(c[0],c[1]))}</span><svg class="ii" width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="9.5"/><path d="M11 9.5v6" stroke-linecap="round"/><circle cx="11" cy="6.5" r=".9" fill="currentColor"/></svg></span></button>`;
+      }).join('')}</div>`;
+  } else if (tab === 'contacts'){
+    let last = '';
+    const rows = contactOrder.map(id => { const p = people[id]; let h = '';
+      if (p.row !== last){ h += `<div class="idx">${p.row}</div>`; last = p.row; }
+      return h + `<button class="lrow" data-ct="${id}">${esc(p.name)}</button>`; }).join('');
+    body = `${nav(null,'','+')}<h1 class="large">${L(['連絡先','연락처'])}</h1><div class="search">⌕ ${L(['検索','검색'])}</div><div class="scroll"><div class="me-card"><span class="av lg" style="width:60px;height:60px;font-size:24px">九</span><div><b>九条 真尋</b><small>${L(['マイカード','내 카드'])}</small></div></div>${rows}</div>`;
+  } else {
+    const keys = [['1',''],['2','ABC'],['3','DEF'],['4','GHI'],['5','JKL'],['6','MNO'],['7','PQRS'],['8','TUV'],['9','WXYZ'],['*',''],['0','+'],['#','']];
+    body = `${nav(null)}<div class="scroll" style="display:flex;flex-direction:column;align-items:center;padding-top:40px"><div style="height:50px"></div><div class="keys" style="grid-template-columns:repeat(3,78px)">${keys.map(([n,l])=>`<button class="key" style="background:#333" data-toast='${T(['',''])}'><b>${n}</b>${l?`<small>${l}</small>`:''}</button>`).join('')}</div><button style="margin-top:20px;width:78px;height:78px;border-radius:50%;background:var(--green);display:grid;place-items:center" data-toast='${T(['番号を入力してください','번호를 입력하세요'])}'>${icon('phone').replace('url(#gp)','none')}</button></div>`;
+  }
+  view(body + phoneTabs(tab));
+  bindPhoneTabs();
+  $$('#view [data-rf]').forEach(b => b.onclick = () => { recentFilter = b.dataset.rf; stack[stack.length-1](); });
+  $$('#view [data-ct]').forEach(b => b.onclick = () => push(() => contact(b.dataset.ct)));
+  $$('#view .key[data-toast]').forEach(b => b.onclick = null);
+}
+function contact(id){
+  const p = people[id];
+  const hist = calls.filter(c => c[2] === id);
+  const hasThread = !!threads[id];
+  view(`${nav(L(['戻る','뒤로']),'',L(['編集','편집']))}<div class="scroll">
+    <div class="chead">${avatar(id,'lg')}<h2>${esc(p.name)}</h2>${p.yomi?`<small>${esc(p.yomi)}</small>`:''}${lang==='ko'&&p.ko?`<small>${esc(p.ko)}</small>`:''}</div>
+    <div class="acts">
+      <button data-a="msg"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C6.5 3 2 6.7 2 11.2c0 2.6 1.5 4.9 3.8 6.4L5 21l4-2.1c1 .3 2 .4 3 .4 5.5 0 10-3.7 10-8.2S17.5 3 12 3z"/></svg>${L(['メッセージ','메시지'])}</button>
+      <button data-a="call"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>${L(['発信','전화'])}</button>
+      <button data-a="call"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="6" width="14" height="12" rx="3"/><path d="M17 10l5-3v10l-5-3z"/></svg>${L(['ビデオ','영상'])}</button>
+      <button data-toast='${T(['メールアドレスがありません','이메일 주소가 없습니다'])}'><svg viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="5" width="20" height="14" rx="2.5"/><path d="M3 6l9 7 9-7" fill="none" stroke="#1c1c1e" stroke-width="1.6"/></svg>${L(['メール','메일'])}</button>
+    </div>
+    <div class="group"><div class="fld"><small>${L(['携帯','휴대전화'])}</small><span>${esc(p.tel)}</span></div></div>
+    ${p.sub?`<div class="group"><div class="fld"><small>${L(['勤務先','직장'])}</small><span class="plain">${esc(L(p.sub))}</span></div></div>`:''}
+    ${hist.length?`<div class="group"><div class="fld"><small>${L(['最近の履歴','최근 기록'])}</small><span class="plain" style="font-size:15px;line-height:1.7">${hist.map(c=>`${esc(dayLabel(c[0]))} ${c[1]}　${kindLabel(c)}`).join('<br>')}</span></div></div>`:''}
+    <div class="group"><div class="fld"><small>${L(['メモ','메모'])}</small><span class="plain" style="min-height:22px;display:block"></span></div></div>
+  </div>`);
+  $$('#view [data-a="call"]').forEach(b => b.onclick = () => push(() => callScreen(id)));
+  const mb = $('#view [data-a="msg"]');
+  mb.onclick = () => hasThread ? push(() => thread(id)) : toast(['メッセージはありません','메시지가 없습니다']);
+}
+
+/* ================= 캘린더 ================= */
+let cal = {y:2022, m:10, sel:TODAY};
+const pad = n => String(n).padStart(2,'0');
+function calendarApp(){
+  const first = new Date(cal.y, cal.m, 1), days = new Date(cal.y, cal.m+1, 0).getDate(), lead = first.getDay();
+  let cells = '';
+  for (let i=0;i<lead;i++) cells += '<span></span>';
+  for (let d=1; d<=days; d++){
+    const iso = `${cal.y}-${pad(cal.m+1)}-${pad(d)}`, md = iso.slice(5);
+    const has = marks.includes(md) || events[iso];
+    const dow = (lead + d - 1) % 7;
+    cells += `<button data-day="${iso}" class="${iso===TODAY?'today':''} ${iso===cal.sel?'sel':''}"><span class="n ${dow===0||dow===6?'sun':''}">${d}</span><i class="dot ${has?'on':''}"></i></button>`;
+  }
+  const md = cal.sel.slice(5);
+  const evs = [...(marks.includes(md) ? [['終日','　']] : []), ...(events[cal.sel] || [])];
+  const title = lang==='ko' ? `${cal.m+1}월 <span>${cal.y}</span>` : `${cal.m+1}月 <span>${cal.y}</span>`;
+  view(`${nav(null,'','')}<div class="cal-head"><h2>${title}</h2><div class="arr"><button data-mv="-1" aria-label="prev">${backChev}</button><button data-mv="1" aria-label="next" style="transform:scaleX(-1)">${backChev}</button></div></div>
+    <div class="wk">${[...WD[lang]].map(w=>`<span>${w}</span>`).join('')}</div>
+    <div class="scroll"><div class="mon">${cells}</div>
+    <div class="evlist"><div class="gtitle" style="padding:8px 16px 4px">${esc(longDate(cal.sel))}</div>${evs.length ? evs.map(e => `<div class="ev"><span class="tm">${e[0]==='終日'?L(['終日','종일']):e[0]}</span><span class="bar" style="${e[1]==='　'?'background:#8e8e93':''}"></span><span class="tt">${esc(L(e[1]))}</span></div>`).join('') : `<div class="empty" style="padding:20px">${L(['予定なし','일정 없음'])}</div>`}</div></div>`);
+  $$('#view [data-day]').forEach(b => b.onclick = () => { cal.sel = b.dataset.day; calendarApp(); });
+  $$('#view [data-mv]').forEach(b => b.onclick = () => { cal.m += +b.dataset.mv; if (cal.m<0){cal.m=11;cal.y--;} if (cal.m>11){cal.m=0;cal.y++;} calendarApp(); });
+}
+
+/* ================= 메모 ================= */
+function notesApp(){
+  const sorted = [...notes].sort((a,b) => (b.date+b.time).localeCompare(a.date+a.time));
+  view(`${nav(L(['フォルダ','폴더']))}<h1 class="large">${L(['メモ','메모'])}</h1><div class="search">⌕ ${L(['検索','검색'])}</div><div class="scroll"><div class="group">${sorted.map(n => {
+    const i = notes.indexOf(n);
+    const first = n.locked ? L(['ロック中','잠김']) : L(n.body).split('\n')[0];
+    return `<button class="nrow" data-n="${i}"><b>${n.locked?'<svg width="12" height="15" viewBox="0 0 14 18" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="8" width="12" height="9" rx="2" fill="currentColor"/><path d="M3.5 8V5.5a3.5 3.5 0 0 1 7 0V8"/></svg>':''}${esc(L(n.title))}</b><small><em>${esc(shortDate(n.date,n.time))}</em>${esc(first)}</small></button>`;
+  }).join('')}</div><div class="empty" style="padding:6px">${L(['3件のメモ','메모 3개'])}</div></div>`);
+  $$('#view [data-n]').forEach(b => b.onclick = () => push(() => note(+b.dataset.n)));
+}
+function note(i){
+  const n = notes[i];
+  if (n.locked){
+    view(`${nav(L(['メモ','메모']))}<div class="locked"><svg width="34" height="44" viewBox="0 0 14 18" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="1" y="8" width="12" height="9" rx="2"/><path d="M3.5 8V5.5a3.5 3.5 0 0 1 7 0V8"/></svg><b>${L(['このメモはロックされています','이 메모는 잠겨 있습니다'])}</b><small>${esc(longDate(n.date))} ${n.time}</small><button class="btn" id="unlockNote">${L(['メモを表示','메모 보기'])}</button></div>`);
+    $('#unlockNote').onclick = () => toast(['パスワードが違います','암호가 틀렸습니다']);
+    return;
+  }
+  view(`${nav(L(['メモ','메모']),'','<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9.5"/><circle cx="7.5" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="16.5" cy="12" r="1" fill="currentColor"/></svg>')}<div class="scroll"><div class="note"><div class="nd">${esc(longDate(n.date))} ${n.time}</div><h2>${esc(L(n.title))}</h2><pre>${esc(L(n.body))}</pre></div></div>`);
+}
+
+/* ================= 사진 ================= */
+function photosApp(){
+  view(`${nav(null,'',L(['選択','선택']))}<h1 class="large">${L(['ライブラリ','보관함'])}</h1><div class="scroll"><div class="locked" style="padding-top:120px"><svg width="64" height="52" viewBox="0 0 64 52" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="3" y="3" width="58" height="46" rx="7"/><circle cx="44" cy="17" r="5"/><path d="M3 40l17-17 14 14 8-8 19 19"/></svg><b>${L(['写真がありません','사진 없음'])}</b><small>${L(['カメラで撮った写真やビデオがここに表示されます。','카메라로 찍은 사진과 비디오가 여기에 표시됩니다.'])}</small></div></div>`);
+}
+
+/* ================= 통화 화면 ================= */
+let callT;
+function callScreen(id){
+  const p = people[id];
+  view(`<div class="callv"><div class="cst" id="cst">${L(['発信中…','연결 중…'])}</div><div class="cnm">${esc(p.name)}</div><div class="cnum">${esc(p.tel)}</div>
+    <div class="cgrid">${[['消音','소리 끔'],['キーパッド','키패드'],['スピーカー','스피커'],['通話を追加','통화 추가'],['FaceTime','FaceTime'],['連絡先','연락처']].map(b=>`<span><i></i>${L(b)}</span>`).join('')}</div>
+    <button class="cend" id="cend" aria-label="end"><svg width="34" height="34" viewBox="0 0 24 24" fill="#fff" style="transform:rotate(135deg)"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg></button></div>`);
+  clearTimeout(callT);
+  if (id === 'nirasawa' || id === 'sasara' || id === 'momoshita') callT = setTimeout(() => { const c = $('#cst'); if (c) c.textContent = L(['おかけになった電話番号は現在使われておりません','지금 거신 번호는 없는 번호입니다']); }, 2600);
+  $('#cend').onclick = () => { clearTimeout(callT); back(); };
+}
+
+/* ================= 파일 ================= */
+function filesApp(){
+  const fic = k => `<svg width="34" height="42" viewBox="0 0 34 42"><path d="M2 3a3 3 0 0 1 3-3h17l10 10v29a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3z" fill="#e5e5ea"/><path d="M22 0v7a3 3 0 0 0 3 3h7" fill="#c7c7cc"/><rect x="2" y="27" width="22" height="9" rx="2" fill="#ff453a"/><text x="13" y="34" font-size="7" fill="#fff" text-anchor="middle" font-family="Helvetica,sans-serif" font-weight="700">PDF</text></svg>`;
+  view(`${nav(L(['ブラウズ','둘러보기']),'',L(['選択','선택']))}<h1 class="large">${L(['スキャン','스캔'])}</h1><div class="search">⌕ ${L(['検索','검색'])}</div><div class="scroll"><div class="group">${files.map((f,i)=>`<button class="cell" data-f="${i}">${fic()}<span class="grow"><span style="display:block;font-size:16px">${esc(L(f.name))}.pdf</span><small style="color:var(--sec);font-size:13px">${f.date.replace(/-/g,'/')}</small></span>${chev}</button>`).join('')}</div></div>`);
+  $$('#view [data-f]').forEach(b => b.onclick = () => push(() => fileView(+b.dataset.f)));
+}
+function fileView(i){
+  const f = files[i]; let doc = '';
+  const tbl = rows => `<table class="pg-tbl">${rows.map(r=>`<tr><td>${L(r[0])}</td><td>${Array.isArray(r[1])?L(r[1]):r[1]}</td></tr>`).join('')}</table>`;
+  if (f.kind === 'ticket') doc = `<div style="background:#c8102e;color:#fff;padding:14px 18px;font-weight:700;letter-spacing:.06em">e-TICKET ITINERARY / RECEIPT</div><div class="pg-body">${tbl([
+    [['お名前','성명'],'KUJO MAHIRO MR / KUSAKI MOMOE MS'],[['予約番号','예약 번호'],'7Q4KXD'],
+    [['往路','가는 편'],['12/10(土) JL663　羽田 08:05 → 大分 09:50　8A・8B','12/10(토) JL663　하네다 08:05 → 오이타 09:50　8A·8B']],
+    [['復路','오는 편'],['12/11(日) JL670　大分 18:40 → 羽田 20:15　8A・8B','12/11(일) JL670　오이타 18:40 → 하네다 20:15　8A·8B']],
+    [['運賃合計','운임 합계'],'¥98,640'],[['支払い','결제'],['クレジットカード','신용카드']]])}</div>`;
+  else if (f.kind === 'kenshin') doc = `<div class="pg-hero" style="background:#eef1f5;text-align:left"><b style="font-size:18px">${L(['令和4年度 定期健康診断 結果通知書','2022년도 정기 건강검진 결과 통지서'])}</b><div style="font-size:13px;color:#6e6e73;margin-top:4px">${L(['警視庁 健康管理室','경시청 건강관리실'])}</div></div><div class="pg-body">${tbl([
+    [['氏名','성명'],'九条 真尋 (41)'],[['身長 / 体重','신장 / 체중'],'159.2 cm / 45.1 kg'],[['BMI','BMI'],'17.8 <b style="color:#c43a2c">L</b>'],[['血圧','혈압'],'128 / 84'],
+    [['AST','AST'],'58 <b style="color:#c43a2c">H</b>'],[['ALT','ALT'],'61 <b style="color:#c43a2c">H</b>'],[['γ-GTP','γ-GTP'],'187 <b style="color:#c43a2c">H</b>'],[['空腹時血糖','공복 혈당'],'92'],
+    [['総合判定','종합 판정'],`<b style="color:#c43a2c">${L(['D　要精密検査（肝機能）','D　정밀검사 필요 (간 기능)'])}</b>`]])}
+    <h3>${L(['医師所見','의사 소견'])}</h3>${L(['飲酒量の見直しをお勧めします。低体重傾向あり。食事をしっかり摂ってください。','음주량 조절을 권합니다. 저체중 경향이 있습니다. 식사를 잘 챙기십시오.'])}</div>`;
+  else if (f.kind === 'receipt') doc = `<div class="pg-hero" style="background:#f4f6f4;text-align:left"><b style="font-size:20px">${L(['領収書','영수증'])}</b><div style="font-size:13px;color:#6e6e73;margin-top:4px">${L(['東雲大学附属病院　東京都渋谷区東','시노노메 대학 부속 병원　도쿄도 시부야구 히가시'])}</div></div><div class="pg-body">${tbl([
+    [['患者氏名','환자 성명'],'九条 真尋 様'],[['入院期間','입원 기간'],['2020年12月3日 〜 12月14日（12日間）','2020년 12월 3일 ~ 12월 14일 (12일간)']],[['診療科','진료과'],['外科','외과']],
+    [['初・再診料','초·재진료'],'¥2,880'],[['入院料','입원료'],'¥186,240'],[['手術','수술'],'¥96,500'],[['検査・画像','검사·영상'],'¥31,720'],[['投薬・注射','투약·주사'],'¥18,460'],
+    [['保険適用後 負担額','보험 적용 후 부담액'],'<b>¥80,340</b>'],[['食事療養費','식사 요양비'],'¥15,180']])}<div style="color:#6e6e73;font-size:12px">${L(['※ 公務災害申請中','※ 공무상 재해 신청 중'])}</div></div>`;
+  else doc = `<div class="pg-hero" style="background:#f4f6f4;text-align:left"><b style="font-size:20px">${L(['退院療養計画書','퇴원 요양 계획서'])}</b><div style="font-size:13px;color:#6e6e73;margin-top:4px">${L(['東雲大学附属病院 外科','시노노메 대학 부속 병원 외과'])}</div></div><div class="pg-body">${tbl([
+    [['患者氏名','환자 성명'],'九条 真尋 様'],[['入院日','입원일'],['2020年12月3日（救急搬送）','2020년 12월 3일 (응급 이송)']],[['退院日','퇴원일'],['2020年12月14日','2020년 12월 14일']],
+    [['傷病名','병명'],['左上腕・背部 裂創　肋骨骨折（右第7・8）','왼쪽 위팔·등 열상　갈비뼈 골절 (오른쪽 7·8번)']],
+    [['退院後の注意','퇴원 후 주의사항'],['抜糸後 2週間は激しい運動を控えること。飲酒は控えること。','실밥 제거 후 2주간 격한 운동 금지. 음주 자제.']],
+    [['次回受診','다음 진료'],['12月21日(月) 外科外来','12월 21일(월) 외과 외래']],
+    [['相談窓口','상담 창구'],['精神科 リエゾン外来（希望時）','정신과 협진 외래 (희망 시)']]])}</div>`;
+  view(`${nav(L(['スキャン','스캔']), `<span style="font-size:15px">${esc(L(f.name))}</span>`)}<div class="page">${doc}</div>`);
+}
+
+/* ================= 브라우저 ================= */
+function browserApp(){
+  view(`${nav(null)}<div class="scroll"><h1 class="large" style="font-size:22px">${L(['よく閲覧するサイト','자주 방문한 사이트'])}</h1>
+    <div class="fav">${web.history.slice(0,4).map(h=>`<button data-w="${h.id}"><span class="fi" style="background:${h.ic[1]}">${h.ic[0]}</span>${esc(L(h.title).split(/[｜　]/)[0])}</button>`).join('')}</div>
+    <div class="gtitle">${L(['履歴','방문 기록'])}</div>
+    <div class="group">${web.history.map(h=>`<button class="cell" data-w="${h.id}"><span class="grow"><span style="display:block;font-size:15px">${esc(L(h.title))}</span><small style="color:var(--sec);font-size:13px">${h.url} · ${esc(dayLabel(h.when))}</small></span>${chev}</button>`).join('')}</div>
+    <div class="gtitle">${L(['最近の検索','최근 검색어'])}</div>
+    <div class="group">${web.searches.map(s=>`<div class="cell"><span style="color:var(--sec)">⌕</span><span class="grow">${esc(L(s))}</span></div>`).join('')}</div>
+  </div><div class="urlbar">⌕ ${L(['検索またはWebサイト名を入力','검색 또는 웹 사이트 이름 입력'])}</div>`);
+  $$('#view [data-w]').forEach(b => b.onclick = () => push(() => page(b.dataset.w)));
+}
+function page(id){
+  const h = web.history.find(x => x.id === id);
+  let body = '';
+  const tbl = rows => `<table class="pg-tbl">${rows.map(r=>`<tr><td>${L(r[0])}</td><td>${Array.isArray(r[1])?L(r[1]):r[1]}</td></tr>`).join('')}</table>`;
+  if (id === 'miel') body = `<div class="pg-hero" style="background:#f7efe3"><div style="font-family:Georgia,serif;font-size:30px;color:#6a4320;font-style:italic">Pâtisserie Miel</div><div style="font-size:13px;color:#9a7b4f;margin-top:4px">${L(['駅前本店','역 앞 본점'])}</div></div>
+    <div class="pg-body"><h3>${L(['季節のおすすめ','계절 추천'])}</h3>${tbl([[['ウイスキーショコラのテリーヌ','위스키 쇼콜라 테린'],`¥3,800<br><small style="color:#8a8a8e">${L(['要予約・アルコール使用','예약 필수 · 알코올 사용'])}</small>`],[['洋梨のタルト','서양배 타르트'],'¥680'],[['カモミールのシフォン','캐모마일 시폰'],'¥520'],[['はちみつのマドレーヌ','꿀 마들렌'],'¥280']])}
+    <h3>${L(['営業時間','영업시간'])}</h3>10:00–20:00 / ${L(['火曜定休','화요일 휴무'])}<h3>${L(['ご予約','예약'])}</h3>${L(['ホールケーキ・テリーヌはお受け取りの2日前までにご予約ください。','홀케이크와 테린은 수령 이틀 전까지 예약해 주세요.'])}</div>`;
+  else if (id === 'tea') body = `<div class="pg-hero" style="background:#eef3f6"><div style="font-family:serif;font-size:26px;letter-spacing:.3em;color:#2e4f66">青翠窯</div><div style="font-size:12px;color:#6a8496;margin-top:4px">${L(['佐賀県有田町','사가현 아리타초'])}</div></div>
+    <div class="pg-body"><div style="height:150px;border-radius:10px;background:radial-gradient(60% 70% at 50% 60%,#fff,#dfe7ec);display:grid;place-items:center"><svg width="150" height="100" viewBox="0 0 150 100"><ellipse cx="60" cy="62" rx="36" ry="28" fill="#fbfbf9" stroke="#c9d3da"/><path d="M90 52c18-6 22 4 30-2" stroke="#c9d3da" stroke-width="5" fill="none"/><path d="M28 55c-12-2-14 14-2 16" stroke="#c9d3da" stroke-width="4" fill="none"/><ellipse cx="60" cy="36" rx="14" ry="5" fill="#fbfbf9" stroke="#c9d3da"/><path d="M104 70h32l-4 18h-24z" fill="#fbfbf9" stroke="#c9d3da"/></svg></div>
+    <h3>${L(['白磁ティーポット・カップ揃（2客）','백자 티포트·찻잔 세트 (2인)'])}</h3>¥24,200（${L(['税込','세금 포함'])}）<p>${L(['ハーブティーの色が映える白磁。茶こし付き。贈答用の桐箱でお届けします。','허브티 색이 잘 보이는 백자. 거름망 포함. 선물용 오동나무 상자에 담아 보내드립니다.'])}</p>${tbl([[['在庫','재고'],['残り2点','2개 남음']],[['名入れ','이름 새기기'],['可（＋¥1,100）','가능 (+¥1,100)']],[['お届け','배송'],['ご注文から7〜10日','주문 후 7~10일']]])}</div>`;
+  else if (id === 'rail') body = `<div style="background:#1f5fbf;color:#fff;padding:12px 18px;font-weight:700">${L(['新幹線 空席照会','신칸센 빈자리 조회'])}</div><div class="pg-body">${tbl([[['区間','구간'],['東京 → 京都','도쿄 → 교토']],[['乗車日','탑승일'],['2022年12月30日(金)','2022년 12월 30일(금)']],[['人数','인원'],['大人 1名','성인 1명']]])}
+    ${[['のぞみ 211号','08:00','10:15','×'],['のぞみ 215号','08:30','10:42','×'],['のぞみ 17号','09:00','11:14','△'],['のぞみ 223号','09:21','11:33','○'],['ひかり 637号','09:33','12:18','○']].map(r=>`<div style="display:flex;justify-content:space-between;border-bottom:1px solid #e5e5ea;padding:10px 0"><span><b>${lang==='ko'?r[0].replace('のぞみ','노조미').replace('ひかり','히카리').replace('号','호'):r[0]}</b><br><small style="color:#6e6e73">${r[1]} → ${r[2]}</small></span><span style="font-size:20px;color:${r[3]==='×'?'#c43a2c':r[3]==='△'?'#d18a00':'#2a8a3a'}">${r[3]}</span></div>`).join('')}
+    <p style="font-size:12px;color:#6e6e73">${L(['○ 空席あり　△ 残りわずか　× 満席','○ 여유　△ 얼마 남지 않음　× 만석'])}</p></div>`;
+  else if (id === 'onsen') body = `<div class="pg-hero" style="background:#2e4a3a;color:#f0ead8"><div style="font-family:serif;font-size:28px;letter-spacing:.3em">湯宿しずく</div><div style="font-size:12px;margin-top:6px;opacity:.8">${L(['大分県 由布院温泉','오이타현 유후인 온천'])}</div></div>
+    <div class="pg-body"><h3>${L(['ご予約内容','예약 내용'])}</h3>${tbl([[['予約番号','예약 번호'],'SZ-221210-0427'],[['代表者','대표자'],`九条 真尋 ${L(['様','님'])}`],[['日程','일정'],['2022年12月10日(土)〜11日(日)','2022년 12월 10일(토)~11일(일)']],[['お部屋','객실'],['離れ 露天風呂付き和室','별채 노천탕 딸린 다다미방']],[['人数','인원'],['大人2名','성인 2명']],[['お食事','식사'],['夕食・朝食付き','저녁 · 아침 포함']],[['ご要望','요청 사항'],['夕食時のお酒は不要','저녁 식사 때 술은 필요 없음']]])}
+    <h3>${L(['キャンセル規定','취소 규정'])}</h3>${L(['前日50%、当日100%','전날 50%, 당일 100%'])}</div>`;
+  else if (h.article) body = `<div style="background:${h.ic[1]};color:#fff;padding:12px 18px;font-family:serif;font-size:19px;font-weight:700">${esc(L(h.paper))}</div><div class="pg-body"><h2 style="font-size:21px;line-height:1.45;margin:6px 0 8px">${esc(L(h.title))}</h2><div style="color:#6e6e73;font-size:13px">${esc(L(h.pdate))}</div>${h.article.map(p=>`<p>${esc(L(p))}</p>`).join('')}</div>`;
+  else body = `<div style="background:#1d3c6a;color:#fff;padding:12px 18px;font-family:serif;font-size:20px;font-weight:700">${L(['東都新聞','도토 신문'])}<small style="font-family:sans-serif;font-size:11px;font-weight:400;margin-left:8px;opacity:.8">${L(['社会','사회'])}</small></div>
+    <div class="pg-body"><h2 style="font-size:21px;line-height:1.45;margin:6px 0 8px">${esc(L(h.title))}</h2><div style="color:#6e6e73;font-size:13px">${L(['2021年10月18日 7:05','2021년 10월 18일 7:05'])}</div>
+    <p>${L(['警視庁は17日夜、東京都立阿利布病院（世田谷区）の精神科医、深木蘇芳容疑者（39）を、入院中の少女に自殺をそそのかした疑いで現行犯逮捕した。','경시청은 17일 밤, 도쿄도립 아리부 병원(세타가야구)의 정신과 의사 후카기 스오우 용의자(39)를 입원 중인 소녀에게 자살을 부추긴 혐의로 현행범 체포했다.'])}</p>
+    <p>${L(['捜査関係者によると、同容疑者は自身が担当する患者らに対し、繰り返し死を肯定する内容の働きかけをしていた疑いがある。同庁は余罪についても調べを進めている。','수사 관계자에 따르면 용의자는 자신이 담당하는 환자들에게 죽음을 긍정하는 내용의 말을 반복해서 한 혐의를 받고 있다. 경시청은 여죄에 대해서도 조사를 진행하고 있다.'])}</p>
+    <p>${L(['調べに対し、容疑者は「私は深木ではない」などと意味の通らない供述をしているという。','조사에서 용의자는 "나는 후카기가 아니다" 등 앞뒤가 맞지 않는 진술을 하고 있다고 한다.'])}</p></div>`;
+  view(`${nav(L(['戻る','뒤로']))}<div class="page">${body}</div><div class="urlbar" style="margin-top:8px"><svg width="11" height="14" viewBox="0 0 14 18" fill="#fff"><rect x="1" y="8" width="12" height="9" rx="2"/><path d="M3.5 8V5.5a3.5 3.5 0 0 1 7 0V8" fill="none" stroke="#fff" stroke-width="1.8"/></svg> ${h.url}</div>`);
+}
+
+/* ================= 동영상 ================= */
+function thumb(v, i, prog){
+  const [txt,bg,fg] = v.th;
+  return `<div class="thumb" style="background:radial-gradient(80% 90% at 70% 30%,${fg}33,transparent 70%),${bg}"><span class="big" style="color:${fg}">${esc(txt)}</span>${txt===''?`<svg width="90" height="60" viewBox="0 0 90 60" fill="none" stroke="${fg}" stroke-width="2" opacity=".7"><path d="M10 10l-4 14M30 4l-4 14M50 14l-4 14M70 6l-4 14M20 34l-4 14M60 32l-4 14M80 36l-4 14"/></svg>`:''}<span class="dur">${v.dur}</span>${prog?`<span class="bar" style="width:${prog}%"></span>`:''}</div>`;
+}
+let vchip = 0;
+function videoApp(tab){
+  const list = tab === 'history' ? watched.map(i => [videos[i], i]) : videos.map((v,i) => [v,i]).filter(([v,i]) => vchip===0 || (vchip===1 ? [0,1,2,3,4,5,6,7,8].includes(i) : [9,10,11].includes(i)));
+  const chips = [['すべて','전체'],['事件','사건'],['趣味','취미']];
+  view(`<div class="vtop"><span class="lg">${icon('video').replace('<svg','<svg width="30" height="22"')}</span>${L(APPS.video)}</div>
+    ${tab==='home'?`<div class="chips">${chips.map((c,i)=>`<button class="${i===vchip?'on':''}" data-chip="${i}">${L(c)}</button>`).join('')}</div>`:`<h1 class="large" style="font-size:24px">${L(['再生履歴','시청 기록'])}</h1>`}
+    <div class="scroll">${list.map(([v,i]) => `<button class="vcard" data-v="${i}">${thumb(v,i, watched.includes(i) ? [70,100,45,100,100,60,100,30][watched.indexOf(i)] : 0)}<div class="vmeta"><span class="av">${esc(L(v.ch).slice(0,1))}</span><div><b>${esc(L(v.title))}</b><small>${esc(L(v.ch))} · ${L(['視聴回数','조회수'])} ${esc(L(v.views))} · ${esc(L(v.ago))}</small></div></div></button>`).join('')}</div>
+    <div class="tabs" style="grid-template-columns:1fr 1fr"><button class="${tab==='home'?'on':''}" data-vt="home"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3z"/></svg>${L(['ホーム','홈'])}</button><button class="${tab==='history'?'on':''}" data-vt="history"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg>${L(['履歴','기록'])}</button></div>`);
+  $$('#view [data-chip]').forEach(b => b.onclick = () => { vchip = +b.dataset.chip; videoApp('home'); });
+  $$('#view [data-vt]').forEach(b => b.onclick = () => { stack = [() => videoApp(b.dataset.vt)]; stack[0](); });
+  $$('#view [data-v]').forEach(b => b.onclick = () => push(() => videoPage(+b.dataset.v)));
+}
+function videoPage(i){
+  const v = videos[i];
+  view(`${nav(L(APPS.video))}<div class="vplay" style="background:${v.th[1]}">${thumb(v,i,0)}<span class="pb" data-toast='${T(['オフラインのため再生できません','오프라인이라 재생할 수 없습니다'])}'><svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="M7 4v16l13-8z"/></svg></span></div>
+    <div class="scroll"><div style="padding:12px 14px"><b style="font-size:18px;line-height:1.35;display:block">${esc(L(v.title))}</b><small style="color:#aaa;display:block;margin-top:6px">${L(['視聴回数','조회수'])} ${esc(L(v.views))} · ${esc(L(v.ago))}</small></div>
+    <div style="display:flex;align-items:center;gap:10px;padding:6px 14px 14px;border-bottom:.5px solid var(--sep)"><span class="av sm">${esc(L(v.ch).slice(0,1))}</span><b style="flex:1">${esc(L(v.ch))}</b><span style="background:#fff;color:#000;border-radius:16px;padding:6px 14px;font-size:14px;font-weight:600">${L(['登録','구독'])}</span></div>
+    <div class="gtitle" style="padding:14px 14px 8px">${L(['次の動画','다음 동영상'])}</div>
+    ${videos.filter((_,j)=>j!==i).slice(0,4).map(w=>`<div style="display:flex;gap:10px;padding:0 14px 12px"><div style="width:150px;flex:none">${thumb(w,0,0)}</div><div style="font-size:14px;line-height:1.35">${esc(L(w.title))}<small style="display:block;color:#aaa;margin-top:4px">${esc(L(w.ch))}</small></div></div>`).join('')}</div>`);
+  $('#view .pb').onclick = () => toast(['オフラインのため再生できません','오프라인이라 재생할 수 없습니다']);
+}
+
+/* ================= 지도 ================= */
+let mapSel = 'home';
+function mapsApp(){
+  const pins = places.filter(p => !p.far).map(p => `<g class="pin" data-pl="${p.id}" transform="translate(${p.x} ${p.y})"><circle r="${p.id===mapSel?15:11}" fill="${p.c}" stroke="#fff" stroke-width="2.5"/>${p.id==='home'?'<path d="M-6 1l6-6 6 6v6h-12z" fill="#fff"/>':'<circle r="3.5" fill="#fff"/>'}</g>`).join('');
+  const sel = places.find(p => p.id === mapSel);
+  view(`<div class="mapwrap"><svg viewBox="0 0 360 520" preserveAspectRatio="xMidYMid slice">
+    <rect width="360" height="520" fill="#22262b"/>
+    <path d="M250 520c10-80 40-140 110-170v170z" fill="#1b3a55"/>
+    <path d="M-10 210c60 10 120-20 180 0s100 50 200 30" stroke="#1b3a55" stroke-width="14" fill="none"/>
+    <rect x="170" y="160" width="70" height="45" rx="6" fill="#24402c"/>
+    <rect x="60" y="330" width="60" height="50" rx="6" fill="#24402c"/>
+    <g stroke="#3a4048" stroke-width="10" fill="none"><path d="M0 120h360M0 260h360M0 400h360M80 0v520M200 0v520M300 0v520"/></g>
+    <g stroke="#5b5238" stroke-width="7" fill="none"><path d="M0 330C100 300 180 200 360 120"/><path d="M140 0c0 120 40 200 20 520"/></g>
+    <g stroke="#2e3339" stroke-width="3"><path d="M0 60h360M0 190h360M0 330h360M0 460h360M40 0v520M140 0v520M250 0v520M340 0v520"/></g>
+    ${pins}
+    <circle cx="160" cy="200" r="7" fill="#0a84ff" stroke="#fff" stroke-width="3"/><circle cx="160" cy="200" r="18" fill="#0a84ff" opacity=".18"/>
+  </svg>
+  <div class="sheet"><div class="grab"></div>
+    ${sel?`<div style="padding:4px 16px 12px;border-bottom:.5px solid var(--sep)"><b style="font-size:22px">${esc(L(sel.name))}</b><div style="color:var(--sec);font-size:14px;margin-top:4px">${esc(L(sel.addr))}</div>${sel.far?`<div style="color:var(--sec);font-size:13px;margin-top:4px">${L(sel.far)}</div>`:''}</div>`:''}
+    <div class="cell" style="background:var(--cell2);margin:10px 16px 0;width:auto;border-radius:10px"><span class="sic" style="background:#0a84ff"><svg viewBox="0 0 20 20" fill="#fff"><path d="M4 11l1.5-4.5A2 2 0 0 1 7.4 5h5.2a2 2 0 0 1 1.9 1.5L16 11v4h-2v-1.5H6V15H4zm2.2-1h7.6l-1-3H7.2z"/></svg></span><span class="grow"><span style="display:block">${L(['自宅 → 警視庁','집 → 경시청'])}</span><small style="color:var(--sec);font-size:13px">${L(['首都高2号目黒線 経由・平日朝の通勤','수도고속도로 2호 메구로선 경유 · 평일 아침 출근'])}</small></span><b style="color:var(--green)">24${L(['分','분'])}</b></div><div class="gtitle" style="padding:12px 16px 6px">${L(['よく行く場所','자주 가는 장소'])}</div>
+    ${places.map(p=>`<button class="cell ${p.id===mapSel?'':''}" data-pl="${p.id}"><span class="sic" style="background:${p.c};border-radius:50%"><svg viewBox="0 0 20 20" fill="#fff"><circle cx="10" cy="10" r="4"/></svg></span><span class="grow"><span style="display:block">${esc(L(p.name))}</span><small style="color:var(--sec);font-size:13px">${esc(L(p.addr))}</small></span></button>`).join('')}
+  </div></div>`);
+  $$('#view [data-pl]').forEach(b => b.onclick = () => { mapSel = b.dataset.pl; mapsApp(); });
+}
+
+/* ================= 메일 ================= */
+function mailApp(){
+  mails.sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time));
+  view(`${nav(L(['メールボックス','메일상자']),'',L(['編集','편집']))}<h1 class="large">${L(['受信','받은 편지함'])}</h1><div class="search">⌕ ${L(['検索','검색'])}</div><div class="scroll">${mails.map((m,i)=>`<button class="mrow ${i===0?'unread':''}" data-m="${i}"><span class="tp"><b>${esc(L(m.from))}</b><span class="tm">${esc(shortDate(m.date,m.time))} ${chev}</span></span><div class="sj">${esc(L(m.subj))}</div><div class="pv">${esc(L(m.body).replace(/\n+/g,' '))}</div></button>`).join('')}</div>`);
+  $$('#view [data-m]').forEach(b => b.onclick = () => push(() => mailView(+b.dataset.m)));
+}
+function mailView(i){
+  const m = mails[i];
+  view(`${nav(L(['受信','받은 편지함']))}<div class="scroll"><div class="mail"><div class="from"><span class="av sm">${esc(L(m.from).slice(0,1))}</span><div><b>${esc(L(m.from))}</b><br><small style="color:var(--sec)">${L(['宛先: 自分','받는 사람: 나'])}</small></div><small style="margin-left:auto;color:var(--sec)">${esc(longDate(m.date))}</small></div><h2>${esc(L(m.subj))}</h2><pre>${esc(L(m.body))}</pre></div></div>`);
+}
+
+/* ================= 설정 ================= */
+const sIcon = (bg, path) => `<span class="sic" style="background:${bg}"><svg viewBox="0 0 20 20" fill="#fff">${path}</svg></span>`;
+function settingsApp(){
+  const rows1 = [
+    [sIcon('#ff9f0a','<path d="M2 11l6-1 3-7h2l-2 7 5-1 2-3h1.5l-1 4 1 4H18l-2-3-5-1 2 7h-2l-3-7-6-1z"/>'),['機内モード','에어플레인 모드'],'toggle'],
+    [sIcon('#0a84ff','<path d="M10 4c3 0 5.6 1.1 7.6 3l-1.4 1.4A8.7 8.7 0 0 0 10 6a8.7 8.7 0 0 0-6.2 2.4L2.4 7C4.4 5.1 7 4 10 4zm0 4c1.9 0 3.6.7 4.8 1.9l-1.4 1.4A4.8 4.8 0 0 0 10 10a4.8 4.8 0 0 0-3.4 1.3L5.2 9.9A6.8 6.8 0 0 1 10 8zm0 4.2c.8 0 1.5.3 2 .8L10 15l-2-2c.5-.5 1.2-.8 2-.8z"/>'),['Wi-Fi','Wi-Fi'],'Shirokanedai-1102'],
+    [sIcon('#0a84ff','<path d="M9 2l5 4-4 4 4 4-5 4V11l-3 3-1-1 4-3-4-3 1-1 3 3z"/>'),['Bluetooth','Bluetooth'],['オン','켬']],
+    [sIcon('#30d158','<path d="M4 14h2v3H4zm4-3h2v6H8zm4-3h2v9h-2zm4-4h2v13h-2z"/>'),['モバイル通信','셀룰러'],'']
+  ];
+  const rows2 = [
+    [sIcon('#ff453a','<path d="M10 2a5 5 0 0 0-5 5v4l-2 3h14l-2-3V7a5 5 0 0 0-5-5zm-2 14a2 2 0 0 0 4 0z"/>'),['通知','알림']],
+    [sIcon('#ff375f','<path d="M3 8h4l5-4v12l-5-4H3zm11 0a3 3 0 0 1 0 4l1 1a4.5 4.5 0 0 0 0-6z"/>'),['サウンドと触覚','사운드 및 햅틱']],
+    [sIcon('#5e5ce6','<path d="M13 3a7 7 0 1 0 4 12.7A8 8 0 0 1 13 3z"/>'),['集中モード','집중 모드']],
+    [sIcon('#5e5ce6','<path d="M10 3a7 7 0 1 0 0 14 7 7 0 0 0 0-14zm.8 7.5V6H9v5.3l3.6 2.2.9-1.5z"/>'),['スクリーンタイム','스크린 타임']]
+  ];
+  const rows3 = [
+    ['general', sIcon('#8e8e93','<circle cx="10" cy="10" r="3"/><path d="M10 2l1.5 2.5 3-.5.5 3 2.5 1.5L16 11l1.5 2.5-2.5 1.5-.5 3-3-.5L10 20l-1.5-2.5-3 .5-.5-3L2.5 13.5 4 11 2.5 8.5 5 7l.5-3 3 .5z" fill="none" stroke="#fff" stroke-width="1.6"/>'),['一般','일반']],
+    ['', sIcon('#0a84ff','<path d="M10 3l1.6 3.4L15 8l-3.4 1.6L10 13l-1.6-3.4L5 8l3.4-1.6z"/>'),['画面表示と明るさ','디스플레이 및 밝기']],
+    ['', sIcon('#30b0c7','<path d="M3 4h14v12H3z" fill="none" stroke="#fff" stroke-width="1.6"/><path d="M4 15l4-5 3 3 2-2 3 4z"/>'),['壁紙','배경화면']],
+    ['', sIcon('#0a84ff','<path d="M10 2l6 3v5c0 4-2.6 7-6 8-3.4-1-6-4-6-8V5z"/>'),['プライバシーとセキュリティ','개인정보 보호 및 보안']]
+  ];
+  view(`${nav(null)}<h1 class="large">${L(APPS.settings)}</h1><div class="search">⌕ ${L(['検索','검색'])}</div><div class="scroll">
+    <div class="group"><div class="cell"><span class="av" style="width:58px;height:58px;font-size:24px">九</span><span class="grow"><b style="font-size:20px;font-weight:500;display:block">九条 真尋</b><small style="color:var(--sec);font-size:13px">${L(['アカウント、メディアと購入','계정, 미디어 및 구입'])}</small></span>${chev}</div></div>
+    <div class="group">${rows1.map(r=>`<div class="cell ind">${r[0]}<span class="grow">${L(r[1])}</span>${r[2]==='toggle'?'<span class="toggle"></span>':`<span class="val">${esc(L(r[2]))}</span>${chev}`}</div>`).join('')}</div>
+    <div class="group">${rows2.map(r=>`<button class="cell ind" ${r[1][0]==='スクリーンタイム'?'data-s="st"':''}>${r[0]}<span class="grow">${L(r[1])}</span>${chev}</button>`).join('')}</div>
+    <div class="group">${rows3.map(r=>`<button class="cell ind" ${r[0]?`data-s="${r[0]}"`:''}>${r[1]}<span class="grow">${L(r[2])}</span>${chev}</button>`).join('')}</div>
+  </div>`);
+  $$('#view [data-s="general"]').forEach(b => b.onclick = () => push(generalSettings));
+  $$('#view [data-s="st"]').forEach(b => b.onclick = () => push(screenTime));
+}
+function generalSettings(){
+  const items = [['about',['情報','정보']],['',['ソフトウェアアップデート','소프트웨어 업데이트']],['',['ストレージ','저장 공간']],['lang',['言語と地域','언어 및 지역']],['',['日付と時刻','날짜 및 시간']],['',['キーボード','키보드']]];
+  view(`${nav(L(APPS.settings), L(['一般','일반']))}<div class="scroll" style="padding-top:14px"><div class="group">${items.map(([k,l])=>`<button class="cell" ${k?`data-g="${k}"`:''}><span class="grow">${L(l)}</span>${chev}</button>`).join('')}</div></div>`);
+  $$('#view [data-g="lang"]').forEach(b => b.onclick = () => push(langSettings));
+  $$('#view [data-g="about"]').forEach(b => b.onclick = () => push(aboutSettings));
+}
+function aboutSettings(){
+  const r = [[['名前','이름'],'真尋'],[['曲','노래'],'0'],[['ビデオ','비디오'],'0'],[['写真','사진'],'0'],[['容量','용량'],'128 GB'],[['使用可能','사용 가능'],'101.3 GB']];
+  view(`${nav(L(['一般','일반']), L(['情報','정보']))}<div class="scroll" style="padding-top:14px"><div class="group">${r.map(([k,v])=>`<div class="cell"><span class="grow">${L(k)}</span><span class="val">${v}</span></div>`).join('')}</div></div>`);
+}
+function langSettings(){
+  view(`${nav(L(['一般','일반']), L(['言語と地域','언어 및 지역']))}<div class="scroll" style="padding-top:14px"><div class="gtitle">${L(['使用言語の優先順位','선호하는 언어 순서'])}</div><div class="group">
+    <button class="cell" data-lang="ja"><span class="grow">日本語<small style="display:block;color:var(--sec);font-size:13px">${L(['主言語','기본 언어'])}</small></span>${lang==='ja'?'<span class="check">✓</span>':''}</button>
+    <button class="cell" data-lang="ko"><span class="grow">한국어<small style="display:block;color:var(--sec);font-size:13px">Korean</small></span>${lang==='ko'?'<span class="check">✓</span>':''}</button>
+  </div><div class="gtitle" style="padding-top:6px;text-transform:none">${L(['地域','지역'])}: ${L(['日本','일본'])}</div></div>`);
+  $$('#view [data-lang]').forEach(b => b.onclick = () => {
+    if (b.dataset.lang === lang) return;
+    lang = b.dataset.lang; try { localStorage.setItem('mahiro-lang', lang); } catch(e){}
+    rerender(); toast(['言語を日本語に変更しました','언어를 한국어로 변경했습니다']);
+  });
+}
+
+/* ================= 시계 ================= */
+function clockApp(){
+  const al = [['5:00',['平日','주중'],1],['7:30',['土 日','토 일'],0]];
+  view(`${nav(null,'',L(['編集','편집']))}<h1 class="large">${L(['アラーム','알람'])}</h1><div class="scroll"><div class="gtitle" style="padding:6px 16px">${L(['スリープ | 起床','수면 | 기상'])}</div><div style="padding:0 16px 10px;color:var(--sec);border-bottom:.5px solid var(--sep)">${L(['予定なし','일정 없음'])}</div>
+    <div class="gtitle" style="padding:16px 16px 0">${L(['その他','기타'])}</div>
+    ${al.map((a,i)=>`<div class="alarm ${a[2]?'':'off'}"><span class="grow"><span class="tt"><small>${L(['午前','오전'])}</small>${a[0]}</span><div class="lb">${L(['アラーム','알람'])}、${L(a[1])}</div></span><button class="toggle ${a[2]?'on':''}" data-al="${i}" aria-label="toggle"></button></div>`).join('')}</div>
+    <div class="tabs" style="grid-template-columns:repeat(4,1fr)">${[['世界時計','세계 시계'],['アラーム','알람'],['ストップウォッチ','스톱워치'],['タイマー','타이머']].map((t,i)=>`<button class="${i===1?'on':''}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/>${i===1?'<path d="M12 7v5l3 2"/>':''}</svg>${L(t)}</button>`).join('')}</div>`);
+  $$('#view [data-al]').forEach(b => b.onclick = () => b.classList.toggle('on'));
+}
+
+/* ================= 날씨 ================= */
+function wxIc(k, s=26){
+  const sun = `<circle cx="12" cy="12" r="5" fill="#ffd60a"/>`, moon = `<path d="M15 3a9 9 0 1 0 6 13A7 7 0 0 1 15 3z" fill="#fff"/>`, cloud = `<path d="M7 19a4.5 4.5 0 0 1 .5-9 6 6 0 0 1 11.3 2A3.6 3.6 0 0 1 18 19z" fill="#fff"/>`, rain = cloud + `<path d="M8 21l-1 2M12 21l-1 2M16 21l-1 2" stroke="#5ac8fa" stroke-width="1.6"/>`;
+  return `<svg width="${s}" height="${s}" viewBox="0 0 24 24">${{sun,moon,cloud,rain}[k]}</svg>`;
+}
+function weatherApp(){
+  const hrs = [[L(['今','지금']),'moon','9°'],['0','moon','8°'],['1','moon','8°'],['2','moon','7°'],['3','moon','7°'],['4','cloud','7°']];
+  const days = [[L(['今日','오늘']),'sun','6°','14°'],[L(['金','금']),'sun','7°','16°'],[L(['土','토']),'cloud','9°','17°'],[L(['日','일']),'rain','10°','15°'],[L(['月','월']),'rain','8°','13°'],[L(['火','화']),'sun','6°','14°']];
+  view(`<div class="wx"><h2>${L(['東京','도쿄'])}</h2><div class="big">9°</div><div style="font-size:19px">${L(['晴れ','맑음'])}</div><div style="font-size:17px">${L(['最高:14° 最低:6°','최고:14° 최저:6°'])}</div>
+    <div class="card"><small>${L(['明け方まで晴れ。日中は最高14°の見込みです。','새벽까지 맑음. 낮 최고 기온은 14°로 예상됩니다.'])}</small><div class="hrs">${hrs.map(h=>`<div><span>${h[0]}${/^\d/.test(h[0])?L(['時','시']):''}</span>${wxIc(h[1])}<b style="font-weight:500">${h[2]}</b></div>`).join('')}</div></div>
+    <div class="card"><small>${L(['10日間の天気予報','10일간의 일기예보'])}</small><div class="days">${days.map(d=>`<div><span>${d[0]}</span>${wxIc(d[1],22)}<span style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.7)">${d[2]}<span class="rng" style="flex:1"></span><b style="color:#fff;font-weight:500">${d[3]}</b></span></div>`).join('')}</div></div></div>
+    <button data-back style="position:absolute;right:16px;bottom:30px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.15);display:grid;place-items:center" aria-label="back"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>`);
+}
+
+/* ================= 카메라 ================= */
+function cameraApp(){
+  view(`<div class="cam"><div class="vf"><div class="flash" id="flash"></div></div><div class="modes"><span>${L(['タイムラプス','타임랩스'])}</span><span>${L(['ビデオ','비디오'])}</span><b>${L(['写真','사진'])}</b><span>${L(['ポートレート','인물 사진'])}</span><span>${L(['パノラマ','파노라마'])}</span></div>
+    <div class="ctrl"><button class="lastp" id="lastp" aria-label="photos"></button><button class="shot" id="shot" aria-label="shutter"><i></i></button><span style="width:46px;height:46px;border-radius:50%;background:#2c2c2e;display:grid;place-items:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M4 9a8 8 0 0 1 14-3l2-2v6h-6l2.2-2.2A6 6 0 0 0 6 9zM20 15a8 8 0 0 1-14 3l-2 2v-6h6l-2.2 2.2A6 6 0 0 0 18 15z"/></svg></span></div></div>`);
+  $('#shot').onclick = () => { const f = $('#flash'); f.style.opacity = .9; setTimeout(() => f.style.opacity = 0, 120); };
+  $('#lastp').onclick = () => openApp(photosApp);
+}
+
+/* ================= 지갑 ================= */
+function walletApp(){
+  const cards = wallet.cards.map((c,i)=>`<div style="height:86px;border-radius:14px;background:linear-gradient(135deg,${c.c[0]},${c.c[1]});margin-top:${i?-40:0}px;padding:14px 16px;display:flex;justify-content:space-between;box-shadow:0 -2px 10px rgba(0,0,0,.35);position:relative"><b style="font-size:15px;font-weight:600">${esc(L(c.n))}</b><span style="font-size:14px;font-variant-numeric:tabular-nums">${esc(c.sub)}</span></div>`).join('');
+  let last = '';
+  const rows = wallet.tx.map(t => { let h=''; if (t[0]!==last){ h=`<div class="gtitle" style="padding:12px 16px 6px;text-transform:none">${esc(dayLabel(t[0]))}</div>`; last=t[0]; }
+    return h+`<div class="cell" style="background:var(--cell)"><span class="sic" style="background:${t[4]==='ic'?'#2f8f5a':'#3b5a8a'}"><svg viewBox="0 0 20 20" fill="#fff"><rect x="3" y="5" width="14" height="10" rx="2"/></svg></span><span class="grow"><span style="display:block">${esc(L(t[2]))}</span><small style="color:var(--sec);font-size:13px">${t[1]}　${t[4]==='ic'?L(['交通系IC','교통 IC']):L(['クレジット','신용카드'])}</small></span><span style="font-variant-numeric:tabular-nums">${t[3]}</span></div>`; }).join('');
+  view(`${nav(null,'','+')}<h1 class="large">${L(['ウォレット','지갑'])}</h1><div class="scroll"><div style="padding:0 16px 10px">${cards}</div><h2 style="font-size:20px;margin:8px 16px 0">${L(['最近の取引','최근 거래'])}</h2>${rows}</div>`);
+}
+
+/* ================= 건강 ================= */
+function bars(data, max, color, fmt){
+  return `<div style="display:flex;align-items:flex-end;gap:8px;height:110px;margin-top:10px">${data.map((d,i)=>`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end"><span style="font-size:10px;color:var(--sec)">${fmt(d[1])}</span><span style="width:100%;border-radius:4px;background:${i===data.length-1?color:color+'99'};height:${Math.max(4,d[1]/max*80)}px"></span><span style="font-size:10px;color:var(--sec)">${d[0]}</span></div>`).join('')}</div>`;
+}
+function healthApp(){
+  const hm = h => `${Math.floor(h)}${L(['時間','시간'])}${Math.round((h%1)*60)}${L(['分','분'])}`;
+  const avgS = health.sleep.reduce((a,b)=>a+b[1],0)/health.sleep.length;
+  const avgW = Math.round(health.steps.reduce((a,b)=>a+b[1],0)/health.steps.length);
+  const card = (title,color,big,sub,chart) => `<div class="group" style="padding:14px 16px"><div style="display:flex;justify-content:space-between;color:${color};font-weight:600;font-size:15px"><span>${title}</span><span style="color:var(--sec);font-weight:400;font-size:13px">${L(['過去7日間','최근 7일'])}</span></div><div style="font-size:28px;font-weight:600;margin-top:6px">${big}</div><small style="color:var(--sec)">${sub}</small>${chart}</div>`;
+  view(`${nav(null)}<h1 class="large">${L(['概要','요약'])}</h1><div class="scroll">
+    ${card(L(['睡眠','수면']),'#5ac8fa',hm(health.sleep.at(-1)[1]),L(['平均 ','평균 '])+hm(avgS),bars(health.sleep,8,'#5ac8fa',v=>v.toFixed(1)))}
+    ${card(L(['歩数','걸음 수']),'#ff9f0a',`${health.steps.at(-1)[1].toLocaleString()}<small style="font-size:15px;color:var(--sec)"> ${L(['歩','걸음'])}</small>`,L(['平均 ','평균 '])+avgW.toLocaleString()+L(['歩','걸음']),bars(health.steps,8000,'#ff9f0a',v=>(v/1000).toFixed(1)+'k'))}
+    <div class="group" style="padding:14px 16px"><div style="color:#bf5af2;font-weight:600;font-size:15px">${L(['体重','체중'])}</div><div style="font-size:28px;font-weight:600;margin-top:6px">45.1<small style="font-size:15px;color:var(--sec)"> kg</small></div><small style="color:var(--sec)">${L(['2022年6月24日 健康診断から','2022년 6월 24일 건강검진에서'])}</small></div>
+    <div class="group" style="padding:14px 16px"><div style="color:#ff375f;font-weight:600;font-size:15px">${L(['心拍数','심박수'])}</div><div style="font-size:28px;font-weight:600;margin-top:6px">78<small style="font-size:15px;color:var(--sec)"> ${L(['拍/分','회/분'])}</small></div><small style="color:var(--sec)">${L(['安静時 平均','안정 시 평균'])}</small></div>
+  </div>`);
+}
+
+/* ================= 스크린 타임 ================= */
+function screenTime(){
+  const total = Math.round(screen.days.reduce((a,b)=>a+b[1],0)/screen.days.length);
+  const max = Math.max(...screen.days.map(d=>d[1]));
+  view(`${nav(L(APPS.settings), L(['スクリーンタイム','스크린 타임']))}<div class="scroll" style="padding-top:10px">
+    <div class="group" style="padding:14px 16px"><small style="color:var(--sec)">${L(['1日の平均','일일 평균'])}</small><div style="font-size:30px;font-weight:600">${total}${L(['分','분'])}</div><small style="color:var(--sec)">${L(['先週より6%増加','지난주보다 6% 증가'])}</small>
+      <div style="display:flex;align-items:flex-end;gap:10px;height:90px;margin-top:12px">${screen.days.map((d,i)=>`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end"><span style="width:100%;border-radius:3px;background:#0a84ff;height:${d[1]/max*70}px"></span><span style="font-size:10px;color:var(--sec)">${WD[lang][i]}</span></div>`).join('')}</div></div>
+    <div class="gtitle">${L(['よく使われたもの','가장 많이 사용됨'])}</div>
+    <div class="group">${screen.apps.map(a=>`<div class="cell ind"><span class="ic" style="width:30px;height:30px;border-radius:7px;overflow:hidden;display:block;flex:none">${icon(a[0])}</span><span class="grow">${esc(L(APPS[a[0]]))}<span style="display:block;height:4px;border-radius:2px;background:#0a84ff;margin-top:5px;width:${a[1]/screen.apps[0][1]*100}%"></span></span><span class="val">${a[1]}${L(['分','분'])}</span></div>`).join('')}</div>
+    <div class="gtitle">${L(['持ち上げ','기기 집어 든 횟수'])}</div>
+    <div class="group"><div class="cell"><span class="grow">${L(['1日の平均','일일 평균'])}</span><span class="val">${L(['21回','21회'])}</span></div><div class="cell"><span class="grow">${L(['持ち上げ後に最初に使用','집어 든 후 처음 사용'])}</span><span class="val">${L(APPS.msg)}</span></div></div>
+    <div class="gtitle">${L(['通知','알림'])}</div>
+    <div class="group">${screen.notif.map(n=>`<div class="cell"><span class="grow">${esc(n[0])}</span><span class="val">${L(['1日平均 ','일평균 '])}${n[1]}${L(['件','건'])}</span></div>`).join('')}</div>
+  </div>`);
+}
+
+/* ================= 음악 ================= */
+function musicApp(){
+  view(`${nav(null)}<h1 class="large">${L(['今すぐ聴く','지금 듣기'])}</h1><div class="scroll">
+    <div style="margin:0 16px 18px;padding:14px;border-radius:12px;background:var(--cell);color:var(--sec);font-size:14px">${L(['まだ何も再生していません。気になるプレイリストから聴いてみましょう。','아직 재생한 항목이 없습니다. 마음에 드는 플레이리스트부터 들어 보세요.'])}</div>
+    <h2 style="font-size:22px;padding:0 16px 10px;margin:0">${L(['おすすめプレイリスト','추천 플레이리스트'])}</h2>
+    <div class="mgrid">${music.recs.map((p,i)=>`<button data-pl="${i}"><div class="art" style="background:linear-gradient(135deg,${p.c[0]},${p.c[1]})"></div>${esc(L(p.n))}<small style="display:block;color:var(--sec)">${L(['ミュージック編集部','음악 편집부'])}</small></button>`).join('')}</div></div>`);
+  $$('#view [data-pl]').forEach(b => b.onclick = () => push(() => { const p = music.recs[+b.dataset.pl];
+    view(`${nav(L(['今すぐ聴く','지금 듣기']))}<div class="scroll" style="text-align:center;padding:10px 40px 40px"><div style="aspect-ratio:1;border-radius:12px;background:linear-gradient(135deg,${p.c[0]},${p.c[1]});box-shadow:0 10px 30px rgba(0,0,0,.5)"></div><h2 style="margin:16px 0 4px;font-size:22px">${esc(L(p.n))}</h2><div style="color:var(--sec);font-size:14px">${L(['ミュージック編集部','음악 편집부'])}</div><div style="display:flex;gap:12px;margin-top:18px"><button style="flex:1;background:var(--cell);border-radius:10px;padding:12px;color:var(--red);font-weight:600" data-toast='${T(['登録が必要です','구독이 필요합니다'])}'>▶ ${L(['再生','재생'])}</button><button style="flex:1;background:var(--cell);border-radius:10px;padding:12px;color:var(--red);font-weight:600" data-toast='${T(['登録が必要です','구독이 필요합니다'])}'>⤨ ${L(['シャッフル','셔플'])}</button></div></div>`); }));
+}
+
+/* ================= 시작 ================= */
+renderStatic();
+show('lock');
+
+</script>
+
+</body>
+</html>
